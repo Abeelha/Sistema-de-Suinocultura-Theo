@@ -1,0 +1,128 @@
+/* 
+Projeto Theodoro Bertol Suinocultura
+Reset de estilos para garantir consistência entre navegadores
+*/
+
+:root {
+    --texto: #f8f9fa;
+    --background: #343a40;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background);
+    color: var(--texto);
+}
+
+/* Navegação */
+.navegacao li {
+    position: relative;
+}
+
+.navegacao li a:hover {
+    color: #C78c19;
+}
+
+.navegacao li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    right: 0;
+    height: 3px;
+    display: block;
+    background: #C78c19;
+    transition: width .3s ease;
+    -webkit-transition: width .3s ease;
+}
+
+.navegacao li a:hover::after {
+    width: 100%;
+    background-color: #C78c19;
+    left: 0;
+}
+
+/* Fim navegação */
+
+#foo {
+    color: var(--texto);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.banner {
+    width: 100%;
+    background-position: center;
+}
+
+.parallax {
+    /* The image used */
+    background-image: url("img_parallax.jpg");
+
+    /* Set a specific height */
+    min-height: 500px;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.banner-text {
+    background-color: #343a40;
+    color: var(--texto);
+}
+
+.container {
+    margin-top: 20px;
+}
+
+/* Barra de navegação */
+.navbar {
+    background-color: #007bff;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--texto);
+}
+
+/* Cabeçalho da página */
+h1 {
+    color: #007bff;
+}
+
+/* Links */
+a {
+    color: #007bff;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Botões */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Semáforo */
+
+/* Adaptação para melhorar a legibilidade e estética */
+.container h1,
+.container p {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
