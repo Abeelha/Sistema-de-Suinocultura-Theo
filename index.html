@@ -20,7 +20,8 @@
 <body>
     <header>
         <div class="caixa">
-            <h1><img src="./imgs/logo.png" alt="Logo Porquinho"></h1>
+            <h1><img src="./imgs/logo.png"></h1>
+
             <nav>
                 <ul class="navegacao">
                     <li><a href="index.barbearia.html">Home</a></li>
@@ -31,24 +32,80 @@
         </div>
     </header>
 
+    <div class="section1">
+        <div class="text">Suinocultura</div>
+    </div>
+    <div class="section2">
+    </div>
+    <div class="text">NORMAL</div>
+    <img class="banner" src="./imgs/banner.jpg">
+
     <main>
-        <container class="parallax">
-            <div class="section1-parallax">
-                <div class="text-parallax">Sistema de Suinocultura</div>
+        <section class="principal">
+            <h2 class="titulo-principal">Sistema Suino Cultura</h2>
+
+            <img class="porco-feliz" src="./IMGs/missao.jpg" alt="Porco-feliz">
+
+            <p>Na próspera região rural de Pato Branco ergue-se orgulhosamente a Suinofazenda Pioneira. Fundada há mais
+                de duas décadas pelo visionário agrônomo, Sr. João Silva, a empresa é um símbolo de excelência na
+                suinocultura, destacando-se por práticas inovadoras e compromisso inabalável com a qualidade.</p>
+
+            <p id="missao"><em>Nossa missão é: <strong>"Investir continuamente em pesquisa e desenvolvimento,
+                        colaborando com especialistas do setor para aprimorar constantemente suas práticas. A
+                        Suinofazenda Pioneira também mantém parcerias sólidas com instituições acadêmicas e órgãos
+                        governamentais, contribuindo para o avanço da suinocultura no Brasil."</strong>.</em></p>
+
+            <p>Em uma extensa área verdejante, a Suinofazenda Pioneira abraça uma abordagem sustentável, utilizando
+                tecnologias de ponta para garantir o bem-estar dos suínos e preservação ambiental. Os porcos são criados
+                em condições ideais, recebendo cuidados especializados desde a fase de creche até a maturidade,
+                resultando em carne suína de altíssima qualidade.</p>
+        </section>
+
+        <section class="mapa">
+            <h3 class="titulo-principal" :>Nosso estabelecimento</h3>
+
+            <p>Nosso estabelecimento está localizado perto da área rural</p>
+
+            <div class="mapa-conteudo">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14320.171731301105!2d-52.685652609349184!3d-26.195281636803486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e5534409c51af7%3A0x37b32020ca20157a!2sR.%20Da%20Granja%20-%20Pato%20Branco%2C%20PR%2C%2085503-384!5e0!3m2!1sen!2sbr!4v1702509935953!5m2!1sen!2sbr"
+                    width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen=""
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
-            <div class="section2-parallax">
-                <div class="text-parallax">Text</div>
+        </section>
+
+        <section class="beneficios">
+
+            <h3 class="titulo-principal">Benefícios</h3>
+
+            <div class="conteudo-beneficios">
+                <ul class="lista-beneficios">
+                    <li class="itens">Atendimento aos Clientes</li>
+                    <li class="itens">Espaço diferenciado</li>
+                    <li class="itens">Localização</li>
+                    <li class="itens">Profissionais Qualificados</li>
+                    <li class="itens">Pontualidade</li>
+                    <li class="itens">Limpeza</li>
+                </ul><img src="./imgs/beneficios.jpg" class="imagem-beneficios">
             </div>
-        </container>
+
+
+
+            <div class="video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/L1A8M6p5Hjc?si=FTl00XwF3w_4SZX0"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+        </section>
     </main>
-    <!-- Conteúdo da Página -->
+
 
     <footer>
         <img src="./imgs/logo-branco.png">
-        <p class="copyright">&copy; Copyright 1000Medic</p>
+        <p class="copyright">&copy; Copyright Barbearia Beardtol - 2019</p>
+
     </footer>
-
-
     <!-- Bootstrap JavaScript (jQuery e Popper.js são necessários para o Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -63,8 +120,6 @@
 </body>
 
 </html>
-
-
 
 <!-- 
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
