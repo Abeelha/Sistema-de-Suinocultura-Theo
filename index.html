@@ -12,59 +12,42 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="CSS/Style.css">
+    <link rel="stylesheet" href="CSS/reset.css">
     <link rel="icon" href="IMGs/icone.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
-    <!-- Barra de Navegação Bootstrap responsiva -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Suinocultura</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse navegacao" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="entrada_racao.html">Entrada de Ração</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="distribuicao_matrices.html">Distribuição para Matrizes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="distribuicao_bercario.html">Distribuição no Berçário</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="distribuicao_machos.html">Distribuição para Machos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="controle_estoque.html">Controle de Estoque</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="relatorio_diario.html">Relatório Diário</a>
-                </li>
-            </ul>
+    <header>
+        <div class="caixa">
+            <h1><img src="./imgs/logo.png" alt="Logo Porquinho"></h1>
+            <nav>
+                <ul class="navegacao">
+                    <li><a href="index.barbearia.html">Home</a></li>
+                    <li><a href="produtos.html">Produtos</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </nav>
         </div>
-    </nav>
-    <div class="parallax">
-        <img class="banner" src="/IMGs/background-1.jpg">
-        <div class="banner-text">
-            <h1 class="mb-4">Bem-vindo ao Sistema de Suinocultura</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore
-                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                mollit
-                anim id est laborum.</p>
-        </div>
-    </div>
+    </header>
 
+    <main>
+        <container class="parallax">
+            <div class="section1-parallax">
+                <div class="text-parallax">Sistema de Suinocultura</div>
+            </div>
+            <div class="section2-parallax">
+                <div class="text-parallax">Text</div>
+            </div>
+        </container>
+    </main>
     <!-- Conteúdo da Página -->
-    <div class="container-1 mt-4">
-    </div>
+
+    <footer>
+        <img src="./imgs/logo-branco.png">
+        <p class="copyright">&copy; Copyright 1000Medic</p>
+    </footer>
+
 
     <!-- Bootstrap JavaScript (jQuery e Popper.js são necessários para o Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -80,3 +63,36 @@
 </body>
 
 </html>
+
+
+
+<!-- 
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                    <a class="navbar-brand" href="#">Suinocultura</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse navegacao" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="entrada_racao.html">Entrada de Ração</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="distribuicao_matrices.html">Distribuição para Matrizes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="distribuicao_bercario.html">Distribuição no Berçário</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="distribuicao_machos.html">Distribuição para Machos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="controle_estoque.html">Controle de Estoque</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="relatorio_diario.html">Relatório Diário</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav> -->

@@ -1,20 +1,58 @@
 /* 
 Projeto Theodoro Bertol Suinocultura
-Reset de estilos para garantir consistência entre navegadores
 */
-
 :root {
     --texto: #f8f9fa;
     --background: #343a40;
 }
 
+html {
+    height: 100vh;
+    overflow: hidden;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: var(--background);
     color: var(--texto);
 }
 
 /* Navegação */
+header {
+    background: #bbbbbb;
+    padding: 20px 0;
+}
+
+.caixa {
+    position: relative;
+    width: 940px;
+    margin: 0 auto;
+
+}
+
+nav {
+    position: absolute;
+    top: 110px;
+    right: 110px;
+}
+
+nav li {
+    display: inline;
+    margin: 0 0 0 15px;
+}
+
+nav a {
+    text-transform: uppercase;
+    color: #000000;
+    font-weight: bold;
+    font-size: 22px;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+}
+
 .navegacao li {
     position: relative;
 }
@@ -43,86 +81,66 @@ body {
 
 /* Fim navegação */
 
-#foo {
-    color: var(--texto);
-}
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-
-.banner {
-    width: 100%;
-    background-position: center;
-}
-
+/* Parallax */
 .parallax {
-    /* The image used */
-    background-image: url("img_parallax.jpg");
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    background: #222;
+    perspective: 1px;
+    transform-style: preserve-3d;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
 
-    /* Set a specific height */
-    min-height: 500px;
+.section1-parallax,
+.ssection2-parallax {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    transform-style: preserve-3d;
+}
 
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
+.section1-parallax::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url("../IMGs/base-parallax.png") top center;
+    background-size: cover;
+    transform: translateZ(-1px) scale(2.2);
+    filter: blur(2px);
+}
+
+.section1-parallax::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url("../IMGs/Blur-parallax.png") top center;
     background-size: cover;
 }
 
-.banner-text {
-    background-color: #343a40;
-    color: var(--texto);
+.section1-parallax .text-parallax {
+    top: 10%;
+    transform: translateZ(-0.5px) scale(1.5, 1.6) translate(-33%, 10%);
 }
 
-.container {
-    margin-top: 20px;
+.ssection2-parallax {
+    background: rgb(68, 35, 19);
 }
 
-/* Barra de navegação */
-.navbar {
-    background-color: #007bff;
+.text-parallax {
+    top: 20%;
+    left: 50%;
+    position: absolute;
+    font-family: 'Franklin Gothic Heavy';
+    font-size: 4vw;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
+        5px 5px 70px rgba(255, 255, 255, 0.5);
+    transform: scale(1, 1.1) translate(-50%, 10%);
 }
 
-.navbar-dark .navbar-nav .nav-link {
-    color: var(--texto);
-}
-
-/* Cabeçalho da página */
-h1 {
-    color: #007bff;
-}
-
-/* Links */
-a {
-    color: #007bff;
-}
-
-a:hover {
-    color: #0056b3;
-}
-
-/* Botões */
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-/* Semáforo */
-
-/* Adaptação para melhorar a legibilidade e estética */
-.container h1,
-.container p {
-    background-color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
+/* Fim Parallax */
