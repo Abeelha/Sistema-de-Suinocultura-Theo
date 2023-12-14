@@ -1,15 +1,11 @@
-// script.js para entraca_racao.html
 
 // Função para registrar entrada de ração
+// Função para registrar entrada de ração
 function registrarEntradaRacao() {
-    const nomeRacao = $('#nomeRacao').val();
     const quantidadeRacao = $('#quantidadeRacao').val();
-    const validadeRacao = $('#validadeRacao').val();
 
     const formData = {
-        nomeRacao,
         quantidadeRacao,
-        validadeRacao,
     };
 
     $.ajax({
@@ -20,6 +16,8 @@ function registrarEntradaRacao() {
         success: function (data) {
             console.log(data);
             $('#mensagemEntradaRacao').text(data.message);
+
+            $('#quantidadeRacao').val('');
         },
         error: function (error) {
             console.error('Erro:', error);
@@ -27,7 +25,6 @@ function registrarEntradaRacao() {
     });
 }
 
-// script.js para distribuicao_matrizes.html
 
 // Função para distribuir ração para matrizes
 function registrarDistribuicaoMatrizes() {
@@ -109,15 +106,14 @@ function registrarDistribuicaoBercario() {
 }
 
 // Função para registrar entrada de ração
+// ... (other script.js code) ...
+
+// Função para registrar entrada de ração
 function registrarEntradaRacao() {
-    const nomeRacao = $('#nomeRacao').val();
     const quantidadeRacao = $('#quantidadeRacao').val();
-    const validadeRacao = $('#validadeRacao').val();
 
     const formData = {
-        nomeRacao,
         quantidadeRacao,
-        validadeRacao,
     };
 
     $.ajax({
@@ -127,20 +123,22 @@ function registrarEntradaRacao() {
         data: JSON.stringify(formData),
         success: function (data) {
             console.log(data);
-            $('#mensagemEntradaRacao').text(data.message);
+            if (data.success) {
+                // Display success message
+                $('#mensagemEntradaRacao').html(`<p class="success">${data.message}</p>`);
+            } else {
+                // Display error message
+                $('#mensagemEntradaRacao').html(`<p class="error">${data.message}</p>`);
+            }
 
-            // Calcular a quantidade total de ração fornecida
-            const quantidadeTotal = parseFloat(quantidadeRacao);
-
-            // Atualizar o estoque no banco de dados
-            atualizarEstoqueNoBanco(quantidadeTotal);
+            // Optionally, you can clear the input field after a successful entry
+            $('#quantidadeRacao').val('');
         },
         error: function (error) {
             console.error('Erro:', error);
         },
     });
 }
-
 // Função para atualizar o estoque no banco de dados
 async function atualizarEstoqueNoBanco(quantidade) {
     try {
@@ -154,7 +152,7 @@ async function atualizarEstoqueNoBanco(quantidade) {
         const estoqueAtual = parseFloat(data.quantidade);
 
         // Calcular o novo estoque
-        const novoEstoque = estoqueAtual + quantidade;
+        const novoEstoque = estoqueAtual - quantidade; // Subtract the quantity
 
         // Enviar uma requisição para atualizar o estoque no banco de dados
         const updateResponse = await fetch('/atualizarEstoqueManual', {
@@ -178,6 +176,7 @@ async function atualizarEstoqueNoBanco(quantidade) {
         console.error('Erro:', error);
     }
 }
+
 
 // Função para obter e exibir o estoque atual
 async function obterEExibirEstoqueAtual() {

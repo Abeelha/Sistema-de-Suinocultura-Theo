@@ -59,92 +59,108 @@ app.get('/estoque', async (req, res) => {
         res.status(500).json({ message: 'Erro ao obter estoque.' });
     }
 });
+async function realizarDistribuicao(categoria, quantidade) {
+    try {
+        // Check if there is enough stock
+        const estoqueAtual = await obterEstoqueAtual();
+        if (quantidade > estoqueAtual) {
+            throw new Error(`Quantidade insuficiente em estoque para ${categoria}.`);
+        }
 
+        // Update stock by subtracting the quantity
+        const novoEstoque = estoqueAtual - quantidade;
+        await atualizarEstoque(novoEstoque);
+
+        // Save distribution to the corresponding table
+        const insertQuery = `INSERT INTO distribuicao${categoria.toLowerCase()} (quantidade) VALUES (?)`;
+        connection.query(insertQuery, [quantidade], (error, results) => {
+            if (error) {
+                console.error(`Erro ao inserir distribuição para ${categoria}:`, error);
+            }
+        });
+
+        return true;
+    } catch (error) {
+        console.error(`Erro ao realizar distribuição para ${categoria}:`, error);
+        return false;
+    }
+}
+// Route handler for distributing to Matrizes
 app.post('/distribuicaoMatrizes', async (req, res) => {
     try {
-        // Extract data from the request body
         const { quantidade } = req.body;
+        const sucesso = await realizarDistribuicao('Matrizes', quantidade);
 
-        // Atualizar estoque (adjust as needed based on your business logic)
-        await atualizarEstoque('Matrizes', quantidade);
-
-        // Salvar distribuição no banco de dados
-        const insertQuery = 'INSERT INTO distribuicaomatrizes (quantidade) VALUES (?)';
-        connection.query(insertQuery, [quantidade], (error, results) => {
-            if (error) {
-                console.error('Erro ao inserir distribuição para matrizes:', error);
-                res.status(500).json({ message: 'Erro ao processar distribuição para matrizes.' });
-            } else {
-                res.status(201).json({ message: 'Distribuição para matrizes registrada com sucesso!' });
-            }
-        });
+        if (sucesso) {
+            res.status(201).json({ message: 'Distribuição para Matrizes registrada com sucesso!' });
+        } else {
+            res.status(500).json({ message: 'Erro ao processar distribuição para Matrizes.' });
+        }
     } catch (error) {
-        console.error('Erro ao processar distribuição para matrizes:', error);
-        res.status(500).json({ message: 'Erro ao processar distribuição para matrizes.' });
+        console.error('Erro ao processar distribuição para Matrizes:', error);
+        res.status(500).json({ message: 'Erro ao processar distribuição para Matrizes.' });
     }
 });
 
+// Route handler for distributing to Machos
 app.post('/distribuicaoMachos', async (req, res) => {
     try {
-        // Extract data from the request body
         const { quantidade } = req.body;
+        const sucesso = await realizarDistribuicao('Machos', quantidade);
 
-        // Atualizar estoque (adjust as needed based on your business logic)
-        await atualizarEstoque('Machos', quantidade);
-
-        // Salvar distribuição no banco de dados
-        const insertQuery = 'INSERT INTO distribuicaomachos (quantidade) VALUES (?)';
-        connection.query(insertQuery, [quantidade], (error, results) => {
-            if (error) {
-                console.error('Erro ao inserir distribuição para machos:', error);
-                res.status(500).json({ message: 'Erro ao processar distribuição para machos.' });
-            } else {
-                res.status(201).json({ message: 'Distribuição para machos registrada com sucesso!' });
-            }
-        });
+        if (sucesso) {
+            res.status(201).json({ message: 'Distribuição para Machos registrada com sucesso!' });
+        } else {
+            res.status(500).json({ message: 'Erro ao processar distribuição para Machos.' });
+        }
     } catch (error) {
-        console.error('Erro ao processar distribuição para machos:', error);
-        res.status(500).json({ message: 'Erro ao processar distribuição para machos.' });
+        console.error('Erro ao processar distribuição para Machos:', error);
+        res.status(500).json({ message: 'Erro ao processar distribuição para Machos.' });
     }
 });
 
+// Route handler for distributing to Berçário
 app.post('/distribuicaoBercario', async (req, res) => {
     try {
         const { quantidade } = req.body;
+        const sucesso = await realizarDistribuicao('Berçário', quantidade);
 
-        // Atualizar estoque
-        await atualizarEstoque('Berçário', quantidade);
-
-        // Salvar distribuição no banco de dados
-        const query = 'INSERT INTO distribuicaobercario (quantidade) VALUES (?)';
-        connection.query(query, [quantidade], (error, results) => {
-            if (error) {
-                console.error('Erro ao inserir distribuição para berçário:', error);
-                res.status(500).json({ message: 'Erro ao processar distribuição para berçário.' });
-            } else {
-                res.status(201).json({ message: 'Distribuição para berçário registrada com sucesso!' });
-            }
-        });
+        if (sucesso) {
+            res.status(201).json({ message: 'Distribuição para Berçário registrada com sucesso!' });
+        } else {
+            res.status(500).json({ message: 'Erro ao processar distribuição para Berçário.' });
+        }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao processar distribuição para berçário.' });
+        console.error('Erro ao processar distribuição para Berçário:', error);
+        res.status(500).json({ message: 'Erro ao processar distribuição para Berçário.' });
     }
 });
 
 app.post('/entradaracao', async (req, res) => {
     try {
         // Extract data from the request body
-        const { nomeRacao, quantidadeRacao, validadeRacao } = req.body;
+        const { quantidadeRacao } = req.body;
 
-        // Process the data as needed (insert into the database, update stock, etc.)
+        // Insert data into entradaracao table
+        const insertQuery = 'INSERT INTO entradaracao (quantidadeRacao, data) VALUES (?, CURRENT_TIMESTAMP)';
+        connection.query(insertQuery, [quantidadeRacao], (error, results) => {
+            if (error) {
+                console.error('Erro ao inserir entrada de ração:', error);
+                res.status(500).json({ message: 'Erro ao processar entrada de ração.' });
+            } else {
+                // Update stock in the estoque table
+                atualizarEstoqueNoBanco(quantidadeRacao);
 
-        // Send a success response
-        res.status(201).json({ message: 'Entrada de ração registrada com sucesso!' });
+                // Send a success response
+                res.status(201).json({ message: 'Entrada de ração registrada com sucesso!' });
+            }
+        });
     } catch (error) {
         console.error('Erro ao processar entrada de ração:', error);
         res.status(500).json({ message: 'Erro ao processar entrada de ração.' });
     }
 });
+
 
 
 // Função para calcular o total de ração fornecida
