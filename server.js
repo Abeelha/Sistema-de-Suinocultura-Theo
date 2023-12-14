@@ -41,7 +41,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Página de entrada de ração
 app.get('/entradaracao', (req, res) => {
-    console.log('__dirname:', __dirname);
     res.sendFile(path.join(__dirname, 'entradaracao.html'));
 });
 
