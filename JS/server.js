@@ -42,6 +42,14 @@ const Estoque = mongoose.model('Estoque', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//Pegar CSS e IMGs
+app.use('/css', express.static(path.join(__dirname, '../CSS')));
+app.use('/imgs', express.static(path.join(__dirname, '../IMGs')));
+
+//Pegar JS
+app.use(express.static(path.join(__dirname, 'JS')));
+
+
 // Página de entrada de ração
 app.get('/entradaracao', (req, res) => {
     res.sendFile(path.join(__dirname, '../entrada_racao.html'));

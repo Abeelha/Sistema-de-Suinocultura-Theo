@@ -1,41 +1,34 @@
-// Função para registrar a entrada de ração
+// script.js
+
 function registrarEntradaRacao() {
-    // Obter os valores dos inputs
+    // Get form data
     const nomeRacao = document.getElementById('nomeRacao').value;
     const quantidadeRacao = document.getElementById('quantidadeRacao').value;
     const validadeRacao = document.getElementById('validadeRacao').value;
 
-    // Construir objeto com os dados
-    const dados = {
+    // Create an object with the form data
+    const formData = {
         nomeRacao,
         quantidadeRacao,
-        validadeRacao,
+        validadeRacao
     };
 
-    // Enviar requisição AJAX para o backend
-    $.ajax({
-        type: 'POST',
-        url: '/entradaRacao',
-        contentType: 'application/json',
-        data: JSON.stringify(dados),
-        success: function (response) {
-            // Exibir mensagem de sucesso
-            exibirMensagem('mensagemEntradaRacao', 'green', response.message);
+    // Make a POST request to the server
+    fetch('/entradaracao', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
         },
-        error: function (error) {
-            // Exibir mensagem de erro
-            exibirMensagem('mensagemEntradaRacao', 'red', 'Erro ao registrar entrada de ração.');
-        },
-    });
-}
-
-// Função utilitária para exibir mensagens
-function exibirMensagem(idElemento, cor, mensagem) {
-    const elemento = document.getElementById(idElemento);
-    elemento.style.color = cor;
-    elemento.innerHTML = mensagem;
-    // Limpar mensagem após 3 segundos
-    setTimeout(() => {
-        elemento.innerHTML = '';
-    }, 3000);
+        body: JSON.stringify(formData),
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the server
+            console.log(data);
+            // Display a message on the HTML page based on the response
+            document.getElementById('mensagemEntradaRacao').innerText = data.message;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
