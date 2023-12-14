@@ -1,7 +1,20 @@
 /* Projeto Theodoro  bertol Suinocultura */
 :root {
-    --texto: #f8f9fa;
-    --background: #343a40;
+    --texto: #0E0E0E;
+    --background: #F0DCB9;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: var(--background);
+    color: var(--texto);
+}
+
+header {
+    background: var(--background);
+    color: var(--texto);
+    padding: 20px 0;
 }
 
 body {
@@ -10,20 +23,26 @@ body {
 }
 
 header {
-    background: var(--background);
-    padding: 20px 0;
+    padding: 2% 0;
 }
 
+/* Navegação */
 .caixa {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 940px;
+    width: 90%;
     margin: 0 auto;
+}
+
+.caixa img {
+    width: 10%
 }
 
 h1 {
     margin: 0;
+    font-size: 1.5em;
+    /* Adjusted relative font size */
 }
 
 nav {
@@ -38,14 +57,20 @@ nav {
 }
 
 .navegacao li {
-    margin-right: 15px;
+    margin-right: 2%;
+    /* Example relative margin */
+}
+
+.navegacao a:hover {
+    color: #BA6151;
 }
 
 .navegacao a {
     text-transform: uppercase;
-    color: #000000;
+    color: var(--texto);
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1.2em;
+    /* Adjusted relative font size */
     text-decoration: none;
     position: relative;
     overflow: hidden;
@@ -55,10 +80,11 @@ nav {
     content: '';
     position: absolute;
     width: 100%;
-    height: 2px;
+    height: 0.1em;
+    /* Adjusted relative height */
     bottom: 0;
     left: 0;
-    background-color: #C78c19;
+    background-color: #BA6151;
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.3s;
@@ -67,6 +93,7 @@ nav {
 .navegacao a:hover::before {
     transform: scaleX(1);
     transform-origin: bottom left;
+
 }
 
 /* Media query for smaller screens */
@@ -78,7 +105,8 @@ nav {
     }
 
     nav {
-        margin-top: 20px;
+        margin-top: 2%;
+        /* Example relative margin */
     }
 
     .navegacao {
@@ -86,10 +114,12 @@ nav {
     }
 
     .navegacao li {
-        margin: 10px 0;
+        margin: 2% 0;
+        /* Example relative margin */
     }
 }
 
+/* FIM Navegação */
 
 /* Parallax */
 .parallax {
@@ -118,7 +148,6 @@ nav {
 
 .principal {
     padding: 3em 0;
-    background: #fefefe;
     width: 940px;
     margin: 0 auto;
 }
@@ -136,7 +165,6 @@ nav {
 
 .mapa {
     padding: 3em 0;
-    background: linear-gradient(#fefefe, #888888);
 }
 
 .mapa-conteudo {
@@ -149,17 +177,6 @@ nav {
     text-align: center;
 }
 
-.beneficios {
-    padding: 3em 0;
-    background: #888888;
-}
-
-.lista-beneficios {
-    width: 40%;
-    display: inline-block;
-    vertical-align: top;
-}
-
 .itens {
     line-height: 1.5em;
 }
@@ -170,17 +187,6 @@ nav {
 
 .itens::before {
     content: "🟊";
-}
-
-.imagem-beneficios {
-    width: 60%;
-    opacity: 1;
-    transition: 400ms;
-    box-shadow: 10px 10px 10px #000000;
-}
-
-.imagem-beneficios:hover {
-    opacity: 0.3;
 }
 
 .video {
