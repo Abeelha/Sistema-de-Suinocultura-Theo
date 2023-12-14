@@ -177,18 +177,6 @@ nav {
     text-align: center;
 }
 
-.itens {
-    line-height: 1.5em;
-}
-
-.itens:first-child {
-    font-weight: bold;
-}
-
-.itens::before {
-    content: "🟊";
-}
-
 .video {
     width: 560px;
     margin: 5em auto;
