@@ -6,7 +6,6 @@ USE SuinoCulturaTheo;
 CREATE TABLE IF NOT EXISTS entradaracao (
     id INT AUTO_INCREMENT PRIMARY KEY,
     quantidadeRacao INT,
-    validadeRacao DATE,
     data DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
