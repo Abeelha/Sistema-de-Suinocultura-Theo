@@ -1,4 +1,4 @@
-// Projeto Theodoro  bertol Suinocultura
+// script.js
 
 function registrarEntradaRacao() {
     // Get form data

@@ -8,6 +8,16 @@ const app = express();
 const PORT = 3001;
 
 
+// Modelos de dados Entrada Ração
+const entradaracaoSchema = new mongoose.Schema({
+    nome: String,
+    total: Number,
+    data: { type: Date, default: Date.now },
+});
+
+const entradaracao = mongoose.model('entradaracao', entradaracaoSchema);
+
+
 // Configuração do Mongoose
 // mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo");
 mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo", {
@@ -15,11 +25,6 @@ mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo", {
     useUnifiedTopology: true,
 });
 
-// Modelos de dados
-const entradaracao = mongoose.model('entradaracao', {
-    quantidade: Number,
-    data: { type: Date, default: Date.now },
-});
 
 const DistribuicaoMatrizes = mongoose.model('DistribuicaoMatrizes', {
     quantidade: Number,
@@ -70,11 +75,19 @@ app.get('/entradaracao', (req, res) => {
 // Rota para processar entrada de ração
 app.post('/entradaracao', async (req, res) => {
     try {
-        const { quantidade } = req.body;
+        const { nome, total, data } = req.body;
 
-        // Salvar entrada no banco de dados
-        const entradaracao = new entradaracao({ quantidade });
-        await entradaracao.save();
+        // Convert 'total' to a number
+        const quantidade = parseInt(total);
+
+        // Save entrada to the database with data
+        const entradaracaoEntry = new entradaracao({
+            nome,
+            total: quantidade,
+            data: new Date(data),  // Assuming 'data' is a string representing a date
+        });
+
+        await entradaracaoEntry.save();
 
         res.status(201).json({ message: 'Entrada de ração registrada com sucesso!' });
     } catch (error) {
@@ -82,6 +95,8 @@ app.post('/entradaracao', async (req, res) => {
         res.status(500).json({ message: 'Erro ao processar entrada de ração.' });
     }
 });
+
+
 
 // Página de distribuição para matrizes
 app.get('/distribuicaoMatrizes', (req, res) => {
