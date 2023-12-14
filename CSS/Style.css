@@ -1,9 +1,8 @@
+/* Projeto Theodoro  bertol Suinocultura */
 :root {
     --texto: #f8f9fa;
     --background: #343a40;
 }
-
-
 
 body {
     margin: 0;
@@ -15,13 +14,90 @@ header {
     padding: 20px 0;
 }
 
+.caixa {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 940px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+}
+
+.navegacao {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.navegacao li {
+    margin-right: 15px;
+}
+
+.navegacao a {
+    text-transform: uppercase;
+    color: #000000;
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.navegacao a::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #C78c19;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s;
+}
+
+.navegacao a:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .caixa {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 90%;
+    }
+
+    nav {
+        margin-top: 20px;
+    }
+
+    .navegacao {
+        flex-direction: column;
+    }
+
+    .navegacao li {
+        margin: 10px 0;
+    }
+}
+
+
 /* Parallax */
 .parallax {
     /* The image used */
     background-image: url('../IMGs/porco.jpg');
 
     /* Full height */
-    height: 100%;
+    height: 50%;
 
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
@@ -32,200 +108,6 @@ header {
 
 /* FIM Parallax */
 
-.caixa {
-    position: relative;
-    width: 940px;
-    margin: 0 auto;
-
-}
-
-nav {
-    position: absolute;
-    top: 110px;
-    right: 110px;
-}
-
-nav li {
-    display: inline;
-    margin: 0 0 0 15px;
-}
-
-nav a {
-    text-transform: uppercase;
-    color: #000000;
-    font-weight: bold;
-    font-size: 22px;
-    text-decoration: none;
-
-}
-
-a {
-    text-decoration: none;
-}
-
-.navegacao li {
-    position: relative;
-}
-
-.navegacao li a:hover {
-    color: #C78c19;
-}
-
-.navegacao li a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    right: 0;
-    height: 3px;
-    display: block;
-    background: #C78c19;
-    transition: width .3s ease;
-    -webkit-transition: width .3s ease;
-}
-
-.navegacao li a:hover::after {
-    width: 100%;
-    background-color: #C78c19;
-    left: 0;
-}
-
-.produtos {
-    width: 940px;
-    margin: 0 auto;
-    padding: 50px 0;
-}
-
-.produtos li {
-    display: inline-block;
-    text-align: center;
-    width: 30%;
-    vertical-align: top;
-    padding: 50px 0;
-    margin: 0 1.5%;
-    padding: 30px 20px;
-    box-sizing: border-box;
-    border: 2px solid #000000;
-    border-radius: 10px;
-}
-
-.produtos li:hover {
-    border-color: #C78c19;
-}
-
-.produtos li:active {
-    border-color: #088c09
-}
-
-.produtos li:hover h2 {
-    font-size: 31px;
-}
-
-.produtos h2 {
-    font-size: 30px;
-    font-weight: bold;
-}
-
-.produto-descricao {
-    font-size: 18px;
-}
-
-.produto-preco {
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-form {
-    margin: 40px;
-    text-align: center;
-}
-
-form label,
-form legend {
-    align-items: center;
-    display: block;
-    font-size: 20px;
-    margin: 15px 0 10px;
-}
-
-.input-padrao {
-    display: block;
-    margin: auto;
-    padding: 10px 25px;
-    border: 2px solid #000000;
-    border-radius: 10px;
-    width: 30%;
-    text-align: center;
-}
-
-.checkbox {
-    margin: 20px 0;
-}
-
-.tabela-horario {
-    margin: 2% auto 2% auto;
-}
-
-fieldset p {
-    font-size: 20px;
-}
-
-.Hselect {
-    margin: 10px 0;
-    padding: 10px 10px;
-    border-radius: 10px;
-}
-
-.enviar {
-    width: 40%;
-    padding: 15px 0;
-    background: orange;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    transition: 1s all;
-    cursor: pointer;
-}
-
-.enviar:hover {
-    background: rgb(255, 94, 0);
-    transform: scale(1.2);
-}
-
-table {
-    margin: 20px 0 40px 40px;
-}
-
-thead {
-    background: #555555;
-    color: white;
-    font-weight: bold;
-}
-
-td,
-th {
-    border: 1px solid #000000;
-    padding: 8px 15px;
-}
-
-footer {
-    text-align: center;
-    background: url("./imgs/bg.jpg");
-    padding: 40px 0;
-}
-
-.copyright {
-    color: #ffffff;
-    font-size: 13px;
-    margin: 20px 0;
-}
-
-/* css da página inicial */
-.banner {
-    width: 100%;
-}
 
 .titulo-principal {
     text-align: center;
@@ -243,14 +125,6 @@ footer {
 
 .principal p {
     margin: 1em;
-}
-
-.principal strong {
-    font-weight: bold;
-}
-
-.principal em {
-    font-style: italic;
 }
 
 .porco-feliz {
@@ -278,11 +152,6 @@ footer {
 .beneficios {
     padding: 3em 0;
     background: #888888;
-}
-
-.conteudo-beneficios {
-    width: 640px;
-    margin: 0 auto;
 }
 
 .lista-beneficios {
@@ -359,19 +228,11 @@ footer {
         box-shadow: 0px 0px 5px 10px rgba(0, 0, 0, 0.50);
     }
 
-    .produtos {
-        width: 100%;
-    }
-
     .produtos li {
         display: inline-block;
         flex-direction: column;
         width: 95%;
         margin: 2%;
-    }
-
-    .prod-img {
-        object-fit: none;
     }
 
     form,
