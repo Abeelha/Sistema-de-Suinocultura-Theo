@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./CSS/style.css">
+    <script defer src="./JS/script.js"></script>
+    <title>Distribuição para Bercário</title>
+</head>
+
+<body>
+    <header>
+        <div class="caixa">
+            <a href="index.html">
+                <img class="icone_inicial" src="./IMGs/icone.png" alt="Ícone">
+            </a>
+            <nav>
+                <ul class="navegacao">
+                    <li><a href="entrada_racao.html">Entradas Ração</a></li>
+                    <li><a href="controle_estoque">Controle de Estoque</a></li>
+                    <li><a href="relatorio_diario.html">Relatório Diário</a></li>
+                    <li><a href="distribuicao_matrizes.html">Distribuição Matriz</a></li>
+                    <li><a href="distribuicao_bercario.html">Distribuição Bercário</a></li>
+                    <li><a href="distribuicao_machos.html">Distribuição Machos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="principal">
+            <img src="./IMGs/racao_bercario.jpg" alt="Ração Para Bercário">
+
+            <!-- Formulário de Distribuição para Bercário -->
+            <div class="formulario-distribuicao-bercario">
+                <h3 class="titulo-principal">Distribuição para Bercário</h3>
+                <label for="quantidadeBercario">Quantidade de Ração para Bercário:</label>
+                <input type="number" id="quantidadeBercario" name="quantidadeBercario" required>
+                <button onclick="registrarDistribuicaoBercario()">Registrar Distribuição</button>
+
+                <!-- Exibir feedback ou mensagens de erro -->
+                <div id="mensagemDistribuicaoBercario"></div>
+            </div>
+
+            <!-- Additional content specific to Distribuição para Bercário goes here -->
+
+        </section>
+    </main>
+
+    <footer>
+        <img src="./IMGs/icone.png">
+        <p class="copyright">&copy; Copyright 1000Medic - 2024</p>
+    </footer>
+</body>
+
+</html>

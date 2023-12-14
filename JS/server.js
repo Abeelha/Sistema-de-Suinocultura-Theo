@@ -6,39 +6,49 @@ const path = require('path');
 const app = express();
 const PORT = 3002;
 
-//Paginas:// Página inicial
+// Pegar CSS e IMGs e JS
+app.use('/CSS', express.static(path.join(__dirname, '../CSS')));
+app.use('/IMGs', express.static(path.join(__dirname, '../IMGs')));
+app.use('/JS', express.static(path.join(__dirname, '../JS')));
+
+// Configurando o body-parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Rota para lidar com solicitações para qualquer arquivo HTML
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// Página de entrada de ração
-app.get('/entrada_racao.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../entrada_racao.html'));
+// Create routes for each HTML file
+const htmlFiles = [
+    'entrada_racao',
+    'controle_estoque',
+    'relatorio_diario',
+    'distribuicao_matrizes',
+    'distribuicao_bercario',
+    'distribuicao_machos',
+];
+
+htmlFiles.forEach((file) => {
+    app.get(`/${file}.html`, (req, res) => {
+        res.sendFile(path.join(__dirname, `../${file}.html`));
+    });
 });
 
-// Página de controle de estoque
-app.get('/controle_estoque.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../controle_estoque.html'));
+// Rota para a página inicial (index.html)
+app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// Página de relatório diário
-app.get('/relatorio_diario.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../relatorio_diario.html'));
-});
-
-// Página de distribuição para matrizes
-app.get('/distribuicao_matrizes.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../distribuicao_matrizes.html'));
-});
-
-// Página de distribuição para berçário
-app.get('/distribuicao_bercario.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../distribuicao_bercario.html'));
-});
-
-// Página de distribuição para machos
-app.get('/distribuicao_machos.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../distribuicao_machos.html'));
+// Rota para lidar com solicitações para qualquer arquivo HTML
+app.get('/:page', (req, res) => {
+    const page = req.params.page;
+    if (page === 'index.html') {
+        res.sendFile(path.join(__dirname, '../index.html'));
+    } else {
+        res.sendFile(path.join(__dirname, `../${page}.html`));
+    }
 });
 //Fim Paginas
 
@@ -65,11 +75,6 @@ connection.connect(err => {
 // Configuração do body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Pegar CSS e IMGs e JS
-app.use('/CSS', express.static(path.join(__dirname, '../CSS')));
-app.use('/IMGs', express.static(path.join(__dirname, '../IMGs')));
-app.use('/JS', express.static(path.join(__dirname, '../JS')));
 
 // Página de entrada de ração
 app.get('/entradaracao', (req, res) => {
