@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/style.css">
     <script src="../JS/script.js" defer></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="./JS/jQuery 3.7.1.js"></script>
     <title>Relatório Diário</title>
 </head>
 
@@ -31,11 +30,10 @@
     </header>
     <main>
         <section class="principal">
-            <!-- Exibição do Relatório Diário -->
-            <div class="relatorio-diario">
-                <h3 class="titulo-principal">Relatório Diário</h3>
-                <p id="totalRacaoFornecida"></p>
-                <p id="estoqueAtualRelatorio"></p>
+            <div class="filtro-data">
+                <label for="dataRelatorio">Selecione a data do relatório:</label>
+                <input type="date" id="dataRelatorio" name="dataRelatorio">
+                <button onclick="gerarRelatorio()">Gerar Relatório</button>
             </div>
             <img src="./IMGs/relatorio.png" alt="Relatorio">
         </section>
