@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Suinocultura Theo - Distribuição para Matrizes</title>
+    <link rel="stylesheet" href="CSS/Style.css">
+    <link rel="stylesheet" href="CSS/reset.css">
+    <script src="/JS/script.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <link rel="icon" href="IMGs/icone.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="caixa">
+            <a href="index.html">
+                <img class="icone_inicial" src="./IMGs/icone.png" alt="Ícone">
+            </a>
+            <nav>
+                <ul class="navegacao">
+                    <li><a href="entrada_racao.html">Entradas Ração</a></li>
+                    <li><a href="controle_estoque">Cntrole de Estoque</a></li>
+                    <li><a href="relatorio_diario.html">Relatório Diário</a></li>
+                    <li><a href="distribuicao_matrizes.html">Distribuição Machos</a></li>
+                    <li><a href="distribuicao_bercario.html">Distribuição Bercário</a></li>
+                    <li><a href="distribuicao_machos.html">Distribuição Machos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="principal">
+
+            <img src="./IMGs/racao_porcos.jpg" alt="Ração Para porcos">
+
+            <!-- Formulário de Distribuição para Matrizes -->
+            <div class="formulario-distribuicao-matrizes">
+                <h3 class="titulo-principal">Distribuição para Matrizes</h3>
+                <label for="quantidadeMatrizes">Quantidade de Ração para Matrizes:</label>
+                <input type="number" id="quantidadeMatrizes" name="quantidadeMatrizes" required>
+                <button onclick="registrarDistribuicaoMatrizes()">Registrar Distribuição</button>
+
+                <!-- Exibir feedback ou mensagens de erro -->
+                <div id="mensagemDistribuicaoMatrizes"></div>
+            </div>
+
+            <!-- Additional content specific to Distribuição para Matrizes goes here -->
+
+        </section>
+    </main>
+    <footer>
+        <img src="./IMGs/icone.png">
+        <p class="copyright">&copy; Copyright 1000Medic - 2024</p>
+    </footer>
+</body>
+
+</html>

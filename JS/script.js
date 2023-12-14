@@ -1,50 +1,63 @@
 // script.js
 
+// Função para registrar a entrada de ração
 function registrarEntradaRacao() {
+    // Obter dados do formulário
     const nomeRacao = document.getElementById('nomeRacao').value;
     const quantidadeRacao = document.getElementById('quantidadeRacao').value;
     const validadeRacao = document.getElementById('validadeRacao').value;
 
+    // Criar objeto com os dados do formulário
     const formData = {
         nomeRacao,
         quantidadeRacao,
-        validadeRacao
+        validadeRacao,
     };
 
+    // Fazer uma requisição POST para o servidor usando AJAX
     $.ajax({
         type: 'POST',
         url: '/entradaracao',
-        data: JSON.stringify(formData),
         contentType: 'application/json',
+        data: JSON.stringify(formData),
         success: function (data) {
+            // Lidar com a resposta do servidor
             console.log(data);
-            document.getElementById('mensagemEntradaRacao').innerText = data.message;
+            // Exibir uma mensagem na página HTML com base na resposta
+            $('#mensagemEntradaRacao').text(data.message);
         },
         error: function (error) {
-            console.error('Error:', error);
-        }
+            console.error('Erro:', error);
+        },
     });
 }
 
-function realizarDistribuicao(tabela) {
-    const quantidade = document.getElementById(`quantidade${tabela}`).value;
+// Função para distribuir ração para matrizes
+function distribuirRacaoMatrizes() {
+    // Obter dados do formulário
+    const quantidade = document.getElementById('quantidadeMatrizes').value;
 
+    // Criar objeto com os dados do formulário
     const formData = {
-        tabela,
-        quantidade
+        quantidade,
     };
 
+    // Fazer uma requisição POST para o servidor usando AJAX
     $.ajax({
         type: 'POST',
-        url: '/distribuicao',
-        data: JSON.stringify(formData),
+        url: '/distribuicaoMatrizes',
         contentType: 'application/json',
+        data: JSON.stringify(formData),
         success: function (data) {
+            // Lidar com a resposta do servidor
             console.log(data);
-            document.getElementById(`mensagem${tabela}`).innerText = data.message;
+            // Exibir uma mensagem na página HTML com base na resposta
+            $('#mensagemDistribuicaoMatrizes').text(data.message);
         },
         error: function (error) {
-            console.error('Error:', error);
-        }
+            console.error('Erro:', error);
+        },
     });
 }
+
+// Adicione funções semelhantes para outras requisições AJAX conforme necessário
