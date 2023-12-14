@@ -130,7 +130,7 @@ app.post('/distribuicaoMatrizes', async (req, res) => {
     }
 });
 
-// Rota para obter estoque atual
+/// Rota para obter estoque atual
 app.get('/estoque', async (req, res) => {
     try {
         const estoque = await obterEstoqueAtual();
@@ -140,21 +140,6 @@ app.get('/estoque', async (req, res) => {
         res.status(500).json({ message: 'Erro ao obter estoque.' });
     }
 });
-
-// Função para atualizar o estoque
-async function atualizarEstoque(tipo, quantidade) {
-    try {
-        const query = 'UPDATE estoque SET quantidade = quantidade - ?';
-        connection.query(query, [quantidade], (error, results) => {
-            if (error) {
-                console.error('Erro ao atualizar estoque:', error);
-            }
-        });
-    } catch (error) {
-        console.error('Erro ao atualizar estoque:', error);
-    }
-}
-
 // Página de relatório diário
 app.get('/relatorioDiario', async (req, res) => {
     try {
@@ -213,3 +198,36 @@ process.on('SIGINT', () => {
 app.listen(PORT, () => {
     console.log(`Servidor está rodando na porta ${PORT}`);
 });
+
+// ... (seções anteriores do arquivo)
+
+// Página de distribuição para machos
+app.get('/distribuicaoMachos', (req, res) => {
+    res.sendFile(path.join(__dirname, '../distribuicao_machos.html'));
+});
+
+// Rota para processar distribuição para machos
+app.post('/distribuicaoMachos', async (req, res) => {
+    try {
+        const { quantidade } = req.body;
+
+        // Atualizar estoque
+        await atualizarEstoque('Machos', quantidade);
+
+        // Salvar distribuição no banco de dados
+        const query = 'INSERT INTO distribuicaomachos (quantidade) VALUES (?)';
+        connection.query(query, [quantidade], (error, results) => {
+            if (error) {
+                console.error('Erro ao inserir distribuição para machos:', error);
+                res.status(500).json({ message: 'Erro ao processar distribuição para machos.' });
+            } else {
+                res.status(201).json({ message: 'Distribuição para machos registrada com sucesso!' });
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao processar distribuição para machos.' });
+    }
+});
+
+

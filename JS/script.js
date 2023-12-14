@@ -62,6 +62,25 @@ function registrarDistribuicaoMatrizes() {
     });
 }
 
+// Import the necessary function
+const { obterEstoqueAtual } = require('/JS/script'); // Update the path accordingly
+
+// ...
+
+// Rota para obter estoque atual
+app.get('/estoque', async (req, res) => {
+    try {
+        const estoque = await obterEstoqueAtual();
+        res.status(200).json({ quantidade: estoque });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao obter estoque.' });
+    }
+});
+
+// Remove the duplicate function definition outside the server code
+
+
 // script.js distribuicao_bercario.html
 
 // Função para registrar distribuição para berçário
@@ -95,95 +114,78 @@ function registrarDistribuicaoBercario() {
 }
 
 
-// script.js distribuicao_machos.html
+// script.js para distribuicao_machos.html
 
 // Função para registrar distribuição para machos
 function registrarDistribuicaoMachos() {
     // Obter dados do formulário
     const quantidade = $('#quantidadeMachos').val();
 
+    // Criar objeto com os dados do formulário
+    const formData = {
+        quantidade: quantidade,
+    };
+
     // Fazer uma requisição POST para o servidor usando AJAX
-    fetch('/distribuicaoMachos', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quantidade }),
-    })
-        .then(response => response.json())
-        .then(data => {
+    $.ajax({
+        type: 'POST',
+        url: '/distribuicaoMachos',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function (data) {
             // Lidar com a resposta do servidor
-            if (data.message) {
-                // Exibir mensagem de sucesso
-                $('#mensagemDistribuicaoMachos').html(`<p>${data.message}</p>`);
-            } else {
-                // Exibir mensagem de erro
-                $('#mensagemDistribuicaoMachos').html('<p>Erro ao processar distribuição para machos.</p>');
-            }
-        })
-        .catch(error => {
+            console.log(data);
+            // Exibir uma mensagem na página HTML com base na resposta
+            $('#mensagemDistribuicaoMachos').html(`<p>${data.message}</p>`);
+        },
+        error: function (error) {
             console.error('Erro:', error);
-            $('#mensagemDistribuicaoMachos').html('<p>Erro de comunicação com o servidor.</p>');
-        });
+            $('#mensagemDistribuicaoMachos').html('<p>Erro ao processar distribuição para machos.</p>');
+        },
+    });
 }
 
 // script.js for controle_estoque.html
-
-// Exemplo: Função para obter estoque atual
-function obterEstoqueAtual() {
-    // Fazer uma requisição AJAX para o servidor
-    fetch('/estoque')
-        .then(response => response.json())
-        .then(data => {
-            // Lidar com a resposta do servidor
-            if (data.quantidade !== undefined) {
-                // Exibir estoque atual
-                $('#estoqueAtual').html(`Quantidade Atual: ${data.quantidade}`);
-            } else {
-                // Exibir mensagem de erro
-                $('#estoqueAtual').html('Erro ao obter estoque atual.');
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            $('#estoqueAtual').html('Erro de comunicação com o servidor.');
+// Rota para obter estoque atual
+app.get('/estoque', async (req, res) => {
+    try {
+        const estoque = await obterEstoqueAtual();
+        res.status(200).json({ quantidade: estoque });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao obter estoque.' });
+    }
+});
+// Função para obter o estoque atual
+async function obterEstoqueAtual() {
+    try {
+        const query = 'SELECT quantidade FROM estoque';
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results[0] ? results[0].quantidade : 0);
+                }
+            });
         });
+    } catch (error) {
+        console.error('Erro ao obter estoque atual:', error);
+        return 0;
+    }
 }
 
-// Exemplo: Função para atualizar estoque
-function atualizarEstoque() {
-    // Obter dados do formulário
-    const quantidade = $('#quantidadeEstoque').val();
+// ...
 
-    // Fazer uma requisição AJAX para o servidor
-    fetch('/atualizarEstoque', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quantidade }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Lidar com a resposta do servidor
-            if (data.message) {
-                // Exibir mensagem de sucesso
-                $('#mensagemAtualizarEstoque').html(`<p>${data.message}</p>`);
-                // Atualizar estoque atual após a atualização
-                obterEstoqueAtual();
-            } else {
-                // Exibir mensagem de erro
-                $('#mensagemAtualizarEstoque').html('<p>Erro ao atualizar estoque.</p>');
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            $('#mensagemAtualizarEstoque').html('<p>Erro de comunicação com o servidor.</p>');
-        });
-}
+process.on('SIGINT', () => {
+    connection.end();
+    process.exit();
+});
 
-// Exemplo: Atualizar estoque na carga da página
-obterEstoqueAtual();
+app.listen(PORT, () => {
+    console.log(`Servidor está rodando na porta ${PORT}`);
+});
+;
 
 // script.js for relatorio_diario.html
 
