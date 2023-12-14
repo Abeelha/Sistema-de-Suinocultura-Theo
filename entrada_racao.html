@@ -9,48 +9,75 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="CSS/Style.css">
     <link rel="stylesheet" href="CSS/reset.css">
-    <script src="JS/script.js"></script>
-    <link rel="icon" href="IMGs/icone.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI/t1Zl/61pIabL5ZkqK3O7W1tQSGF3xO6o8BuAg=" crossorigin="anonymous"></script>
-
+    <script src="JS/script.js"></script>
+    <script src="JS/server.js"></script>
+    <link rel="icon" href="IMGs/icone.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
         <div class="caixa">
-            <img src="./IMGs/icone.png">
+            <a href="index.html">
+                <img class="icone_inicial" src="./IMGs/icone.png" alt="Ícone">
+            </a>
             <nav>
                 <ul class="navegacao">
                     <li><a href="entrada_racao.html">Entradas Ração</a></li>
                     <li><a href="controle_estoque">Cntrole de Estoque</a></li>
                     <li><a href="relatorio_diario.html">Relatório Diário</a></li>
                     <li><a href="distribuicao_matrizes.html">Distribuição Machos</a></li>
-                    <li><a href="distribuicao_bercario.html">Distribuição bercario</a></li>
+                    <li><a href="distribuicao_bercario.html">Distribuição Bercário</a></li>
                     <li><a href="distribuicao_machos.html">Distribuição Machos</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
+
     <main>
         <section class="principal">
-            <!-- ... (your existing main content) ... -->
 
-            <!-- Feed Entry Form -->
-            <div class="feed-entry-form">
+            <img src="./IMGs/racao_porcos.jpg" alt="Ração Para porcos">
+
+            <!-- Formulário de Entrada de Ração -->
+            <div class="formulario-entrada-racao">
                 <h3 class="titulo-principal">Entrada de Ração</h3>
-                <label for="feedQuantity">Quantidade de Ração Recebida:</label>
-                <input type="number" id="feedQuantity" name="feedQuantity" required>
-                <button onclick="submitFeedEntry()">Registrar Entrada</button>
+                <label for="nomeRacao">Nome da Ração:</label>
+                <input type="text" id="nomeRacao" name="nomeRacao" required>
+                <label for="quantidadeRacao">Quantidade de Ração Recebida:</label>
+                <input type="number" id="quantidadeRacao" name="quantidadeRacao" required>
+                <label for="validadeRacao">Data de Validade:</label>
+                <input type="date" id="validadeRacao" name="validadeRacao" required>
+                <button onclick="registrarEntradaRacao()">Registrar Entrada</button>
 
-                <!-- Display feedback or error messages -->
-                <div id="feedMessage"></div>
+                <!-- Exibir feedback ou mensagens de erro -->
+                <div id="mensagemEntradaRacao"></div>
             </div>
+            <p>A Ração Suína Supreme é cuidadosamente formulada para atender às necessidades nutricionais específicas
+                dos porcos em todas as fases de crescimento. Com uma combinação única de ingredientes de alta qualidade,
+                nossa ração proporciona um equilíbrio perfeito de nutrientes essenciais para garantir o desenvolvimento
+                saudável e vigoroso dos suínos.
+
+                Com uma mistura especial de grãos selecionados, vitaminas essenciais e minerais fundamentais, a Ração
+                Suína Supreme promove o ganho de peso ideal, fortalece o sistema imunológico e contribui para a
+                qualidade superior da carne suína. Além disso, nossa fórmula avançada é projetada para garantir a máxima
+                digestibilidade, otimizando a eficiência alimentar e reduzindo o desperdício.
+
+                Na Suinofazenda Pioneira, acreditamos no compromisso com a excelência na suinocultura, e é por isso que
+                escolhemos a Ração Suína Supreme como a principal escolha para nossos animais. Proporcionamos aos porcos
+                o melhor em nutrição, garantindo assim o sucesso contínuo de nossa produção e a satisfação de nossos
+                clientes.
+
+                Experimente a Ração Suína Supreme e descubra a diferença que uma alimentação de alta qualidade pode
+                fazer para o seu rebanho suíno. Cuidamos da saúde e do bem-estar dos nossos porcos, promovendo uma
+                suinocultura sustentável e de sucesso.
+            </p>
         </section>
 
-        <!-- ... (your existing sections) ... -->
+
     </main>
     <footer>
         <img src="./IMGs/icone.png">

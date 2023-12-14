@@ -1,44 +1,41 @@
-function submitFeedEntry() {
-    const feedQuantity = document.getElementById('feedQuantity').value;
+// Função para registrar a entrada de ração
+function registrarEntradaRacao() {
+    // Obter os valores dos inputs
+    const nomeRacao = document.getElementById('nomeRacao').value;
+    const quantidadeRacao = document.getElementById('quantidadeRacao').value;
+    const validadeRacao = document.getElementById('validadeRacao').value;
 
-    if (!feedQuantity || isNaN(feedQuantity) || feedQuantity <= 0) {
-        displayFeedMessage('Por favor, insira uma quantidade válida.', 'error');
-        return;
-    }
-
-    const feedEntry = {
-        quantidade: parseInt(feedQuantity),
-        data: new Date().toISOString(),
+    // Construir objeto com os dados
+    const dados = {
+        nomeRacao,
+        quantidadeRacao,
+        validadeRacao,
     };
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/entrada-racao', true); // Adjust the endpoint accordingly
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                displayFeedMessage('Entrada de ração registrada com sucesso.', 'success');
-            } else {
-                displayFeedMessage('Erro ao registrar entrada de ração. Tente novamente.', 'error');
-            }
-        }
-    };
-
-    xhr.send(JSON.stringify(feedEntry));
+    // Enviar requisição AJAX para o backend
+    $.ajax({
+        type: 'POST',
+        url: '/entradaRacao',
+        contentType: 'application/json',
+        data: JSON.stringify(dados),
+        success: function (response) {
+            // Exibir mensagem de sucesso
+            exibirMensagem('mensagemEntradaRacao', 'green', response.message);
+        },
+        error: function (error) {
+            // Exibir mensagem de erro
+            exibirMensagem('mensagemEntradaRacao', 'red', 'Erro ao registrar entrada de ração.');
+        },
+    });
 }
 
-function displayFeedMessage(message, type) {
-    const messageDiv = document.getElementById('feedMessage');
-    messageDiv.textContent = message;
-
-    if (type === 'error') {
-        messageDiv.style.color = 'red';
-    } else if (type === 'success') {
-        messageDiv.style.color = 'green';
-    }
-
+// Função utilitária para exibir mensagens
+function exibirMensagem(idElemento, cor, mensagem) {
+    const elemento = document.getElementById(idElemento);
+    elemento.style.color = cor;
+    elemento.innerHTML = mensagem;
+    // Limpar mensagem após 3 segundos
     setTimeout(() => {
-        messageDiv.textContent = '';
-    }, 5000);
+        elemento.innerHTML = '';
+    }, 3000);
 }

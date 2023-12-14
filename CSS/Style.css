@@ -36,7 +36,8 @@ header {
 }
 
 .caixa img {
-    width: 10%
+    width: 200px !important;
+    margin-right: 20px
 }
 
 h1 {
@@ -206,6 +207,28 @@ footer img {
 }
 
 /* FIM Rodapé */
+
+/* Entrada Ração porcos */
+.principal img {
+    max-width: 450px;
+    display: inline-block;
+    margin-right: 20px;
+    border-radius: 25%;
+}
+
+.formulario-entrada-racao {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.formulario-entrada-racao label,
+.formulario-entrada-racao input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* FIM Entrada Ração porcos */
+
 
 @media screen and (max-width: 480px) {
 
