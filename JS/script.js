@@ -203,11 +203,14 @@ async function fazerChamadaEstoque() {
         console.error('Erro ao obter estoque:', error);
     }
 }
-async function gerarRelatorio() {
-    const dataRelatorio = $('#dataRelatorio').val();
-
+// Chame esta função para obter e exibir o estoque assim que a página carregar
+document.addEventListener('DOMContentLoaded', () => {
+    obterEExibirEstoqueAtual();
+    obterRelatorioDiario();
+});
+async function obterRelatorioDiario() {
     try {
-        const response = await fetch(`/relatorioDiario?data=${dataRelatorio}`);
+        const response = await fetch('/relatorioDiario');
         const data = await response.json();
         if (data.totalRacaoFornecida !== undefined && data.estoqueAtual !== undefined) {
             $('#totalRacaoFornecida').html(`Total de Ração Fornecida: ${data.totalRacaoFornecida}`);
@@ -222,11 +225,6 @@ async function gerarRelatorio() {
         $('#estoqueAtualRelatorio').html('');
     }
 }
-// Chame esta função para obter e exibir o estoque assim que a página carregar
-document.addEventListener('DOMContentLoaded', () => {
-    obterEExibirEstoqueAtual();
-    obterRelatorioDiario();
-});
 
 
 // Exemplo: Atualizar relatório diário na carga da página

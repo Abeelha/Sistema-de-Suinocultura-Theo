@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="CSS/Style.css">
     <link rel="stylesheet" href="CSS/reset.css">
     <script src="./JS/script.js" defer></script>
-    <script src="./JS/jQuery 3.7.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <link rel="icon" href="IMGs/icone.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 </head>
@@ -38,6 +40,8 @@
             <!-- Formulário de Entrada de Ração -->
             <div class="formulario-entrada-racao">
                 <h3 class="titulo-principal">Entrada de Ração</h3>
+                <label for="nomeRacao">Nome da Ração:</label>
+                <input type="text" id="nomeRacao" name="nomeRacao" required>
                 <label for="quantidadeRacao">Quantidade de Ração Recebida:</label>
                 <input type="number" id="quantidadeRacao" name="quantidadeRacao" required>
                 <label for="validadeRacao">Data de Validade:</label>

@@ -2,7 +2,6 @@ const express = require('express');
 const mysql = require('mysql2');
 const path = require('path');
 
-const helmet = require('helmet');
 const app = express();
 const PORT = 3002;
 
@@ -10,7 +9,6 @@ app.use('/CSS', express.static(path.join(__dirname, '../CSS')));
 app.use('/IMGs', express.static(path.join(__dirname, '../IMGs')));
 app.use('/JS', express.static(path.join(__dirname, '../JS')));
 
-app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
