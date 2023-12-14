@@ -49,9 +49,17 @@ htmlFiles.forEach((file) => {
 });
 
 // Redirecionar /controle_estoque para /controle_estoque.html
-app.get('/controle_estoque', (req, res) => {
-    res.redirect('/controle_estoque.html');
+// Rota para obter o estoque atual
+app.get('/estoque', async (req, res) => {
+    try {
+        const estoqueAtual = await obterEstoqueAtual();
+        res.json({ quantidade: estoqueAtual });
+    } catch (error) {
+        console.error('Erro ao obter estoque:', error);
+        res.status(500).json({ message: 'Erro ao obter estoque.' });
+    }
 });
+
 
 // Rota para processar distribuição para berçário
 app.post('/distribuicaoBercario', async (req, res) => {

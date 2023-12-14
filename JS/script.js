@@ -180,44 +180,54 @@ function atualizarEstoqueNoBanco(quantidade) {
 // Função para obter e exibir o estoque atual
 async function obterEExibirEstoqueAtual() {
     try {
-        console.log('Antes do fetch');
         const response = await fetch('/estoque');
-        console.log('Depois do fetch');
         const data = await response.json();
-
-        // Atualize o elemento HTML com o estoque atual
         document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${data.quantidade}`;
     } catch (error) {
         console.error('Erro ao obter estoque:', error);
     }
 }
+// Função assíncrona para envolver a chamada
+async function fazerChamadaEstoque() {
+    try {
+        console.log('Antes do fetch');
+        const response = await fetch('/estoque');
+        console.log('Depois do fetch');
 
+        const data = await response.json();
+        console.log('Dados recebidos:', data);
 
-
+        // Atualize o conteúdo da div com o estoque atual
+        document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${data.quantidade}`;
+    } catch (error) {
+        console.error('Erro ao obter estoque:', error);
+    }
+}
 // Chame esta função para obter e exibir o estoque assim que a página carregar
-document.addEventListener('DOMContentLoaded', obterEExibirEstoqueAtual);
-
-
-function obterRelatorioDiario() {
-    fetch('/relatorioDiario')
-        .then(response => response.json())
-        .then(data => {
-            if (data.totalRacaoFornecida !== undefined && data.estoqueAtual !== undefined) {
-                $('#totalRacaoFornecida').html(`Total de Ração Fornecida: ${data.totalRacaoFornecida}`);
-                $('#estoqueAtualRelatorio').html(`Estoque Atual: ${data.estoqueAtual}`);
-            } else {
-                $('#totalRacaoFornecida').html('Erro ao obter relatório diário.');
-                $('#estoqueAtualRelatorio').html('');
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            $('#totalRacaoFornecida').html('Erro de comunicação com o servidor.');
+document.addEventListener('DOMContentLoaded', () => {
+    obterEExibirEstoqueAtual();
+    obterRelatorioDiario();
+});
+async function obterRelatorioDiario() {
+    try {
+        const response = await fetch('/relatorioDiario');
+        const data = await response.json();
+        if (data.totalRacaoFornecida !== undefined && data.estoqueAtual !== undefined) {
+            $('#totalRacaoFornecida').html(`Total de Ração Fornecida: ${data.totalRacaoFornecida}`);
+            $('#estoqueAtualRelatorio').html(`Estoque Atual: ${data.estoqueAtual}`);
+        } else {
+            $('#totalRacaoFornecida').html('Erro ao obter relatório diário.');
             $('#estoqueAtualRelatorio').html('');
-        });
+        }
+    } catch (error) {
+        console.error('Erro ao obter relatório diário:', error);
+        $('#totalRacaoFornecida').html('Erro de comunicação com o servidor.');
+        $('#estoqueAtualRelatorio').html('');
+    }
 }
 
 
 // Exemplo: Atualizar relatório diário na carga da página
+fazerChamadaEstoque();
 obterEExibirEstoqueAtual();
 obterRelatorioDiario();
