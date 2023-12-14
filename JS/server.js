@@ -6,7 +6,41 @@ const path = require('path');
 const app = express();
 const PORT = 3002;
 
-// Rest of your code...
+//Paginas:// Página inicial
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
+});
+
+// Página de entrada de ração
+app.get('/entrada_racao.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../entrada_racao.html'));
+});
+
+// Página de controle de estoque
+app.get('/controle_estoque.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../controle_estoque.html'));
+});
+
+// Página de relatório diário
+app.get('/relatorio_diario.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../relatorio_diario.html'));
+});
+
+// Página de distribuição para matrizes
+app.get('/distribuicao_matrizes.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../distribuicao_matrizes.html'));
+});
+
+// Página de distribuição para berçário
+app.get('/distribuicao_bercario.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../distribuicao_bercario.html'));
+});
+
+// Página de distribuição para machos
+app.get('/distribuicao_machos.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../distribuicao_machos.html'));
+});
+//Fim Paginas
 
 
 // Configurações do MySQL

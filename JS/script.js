@@ -59,5 +59,32 @@ function distribuirRacaoMatrizes() {
         },
     });
 }
+function registrarDistribuicaoMatrizes() {
+    // Get form data
+    const quantidadeMatrizes = document.getElementById('quantidadeMatrizes').value;
 
-// Adicione funções semelhantes para outras requisições AJAX conforme necessário
+    // Create an object with the form data
+    const formData = {
+        quantidade: quantidadeMatrizes,
+    };
+
+    // Make a POST request to the server
+    fetch('/distribuicaoMatrizes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the server
+            console.log(data);
+            // Display a message on the HTML page based on the response
+            document.getElementById('mensagemDistribuicaoMatrizes').innerText = data.message;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
