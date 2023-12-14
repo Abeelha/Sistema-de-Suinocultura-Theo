@@ -60,6 +60,10 @@ app.get('/:page', (req, res) => {
         res.sendFile(path.join(__dirname, `../${page}.html`));
     }
 });
+// Página de distribuição para berçário
+app.get('/distribuicaoBercario', (req, res) => {
+    res.sendFile(path.join(__dirname, '../distribuicao_bercario.html'));
+});
 
 // Entrada de Ração
 app.post('/entradaracao', async (req, res) => {
@@ -187,29 +191,7 @@ async function obterEstoqueAtual() {
     }
 }
 
-// Função para atualizar o estoque
-async function atualizarEstoque(quantidade) {
-    try {
-        const estoqueAtual = await obterEstoqueAtual();
-        const novoEstoque = estoqueAtual - quantidade;
 
-        const query = 'UPDATE estoque SET quantidade = ?';
-        connection.query(query, [novoEstoque], (error) => {
-            if (error) {
-                console.error('Erro ao atualizar estoque:', error);
-            }
-        });
-    } catch (error) {
-        console.error('Erro ao atualizar estoque:', error);
-    }
-}
-
-// ... (seções anteriores do arquivo)
-
-// Página de distribuição para berçário
-app.get('/distribuicaoBercario', (req, res) => {
-    res.sendFile(path.join(__dirname, '../distribuicao_bercario.html'));
-});
 
 // Rota para processar distribuição para berçário
 app.post('/distribuicaoBercario', async (req, res) => {
@@ -234,6 +216,22 @@ app.post('/distribuicaoBercario', async (req, res) => {
         res.status(500).json({ message: 'Erro ao processar distribuição para berçário.' });
     }
 });
+// Função para atualizar o estoque
+async function atualizarEstoque(quantidade) {
+    try {
+        const estoqueAtual = await obterEstoqueAtual();
+        const novoEstoque = estoqueAtual - quantidade;
+
+        const query = 'UPDATE estoque SET quantidade = ?';
+        connection.query(query, [novoEstoque], (error) => {
+            if (error) {
+                console.error('Erro ao atualizar estoque:', error);
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao atualizar estoque:', error);
+    }
+}
 
 process.on('SIGINT', () => {
     connection.end();

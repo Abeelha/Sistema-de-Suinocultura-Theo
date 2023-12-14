@@ -107,8 +107,6 @@ function registrarDistribuicaoBercario() {
             document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro de comunicação com o servidor.</p>';
         });
 }
-// script.js para controle_estoque.html
-// script.js para entraca_racao.html
 
 // Função para registrar entrada de ração
 function registrarEntradaRacao() {
@@ -179,17 +177,19 @@ function atualizarEstoqueNoBanco(quantidade) {
         console.error('Erro ao atualizar estoque no banco:', error);
     }
 }
+// Adicione a chamada fetch('/estoque') onde você deseja obter o estoque
 function obterEExibirEstoqueAtual() {
     fetch('/estoque')
         .then(response => response.json())
         .then(data => {
-            $('#estoqueAtual').text(`Estoque Atual: ${data.quantidade}`);
+            console.log(`Estoque Atual: ${data.quantidade}`);
         })
         .catch(error => {
             console.error('Erro:', error);
-            $('#estoqueAtual').text('Erro ao obter estoque.');
+            console.log('Erro ao obter estoque.');
         });
 }
+
 function obterRelatorioDiario() {
     fetch('/relatorioDiario')
         .then(response => response.json())
