@@ -1,4 +1,5 @@
 // script.js para entraca_racao.html
+
 // Função para registrar entrada de ração
 function registrarEntradaRacao() {
     const nomeRacao = $('#nomeRacao').val();
@@ -223,31 +224,12 @@ async function gerarRelatorio() {
 }
 // Chame esta função para obter e exibir o estoque assim que a página carregar
 document.addEventListener('DOMContentLoaded', () => {
-    // Call functions specific to each page
-    const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
-
-    if (currentPage === 'entrada_racao') {
-        obterEExibirEstoqueAtual();
-        gerarRelatorio();
-
-        // Attach event listener to the "Registrar Entrada" button
-        const registrarEntradaBtn = document.getElementById('registrarEntradaRacaoBtn');
-        if (registrarEntradaBtn) {
-            registrarEntradaBtn.addEventListener('click', registrarEntradaRacao);
-        }
-    } else if (currentPage === 'distribuicao_matrizes') {
-        // ... (call functions specific to distribuicao_matrizes.html)
-    } else if (currentPage === 'distribuicao_machos') {
-        // ... (call functions specific to distribuicao_machos.html)
-    } else if (currentPage === 'distribuicao_bercario') {
-        // ... (call functions specific to distribuicao_bercario.html)
-    } else if (currentPage === 'relatorio_diario') {
-        obterEExibirEstoqueAtual();
-        gerarRelatorio();
-    }
+    obterEExibirEstoqueAtual();
+    obterRelatorioDiario();
 });
+
 
 // Exemplo: Atualizar relatório diário na carga da página
 fazerChamadaEstoque();
 obterEExibirEstoqueAtual();
-gerarRelatorio();
+obterRelatorioDiario();

@@ -29,7 +29,6 @@ connection.connect(err => {
     }
     console.log('Conectado ao MySQL');
 });
-
 // Rota principal
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
@@ -62,6 +61,7 @@ app.get('/estoque', async (req, res) => {
     }
 });
 
+
 // Rota para processar distribuição para berçário
 app.post('/distribuicaoBercario', async (req, res) => {
     try {
@@ -85,6 +85,7 @@ app.post('/distribuicaoBercario', async (req, res) => {
         res.status(500).json({ message: 'Erro ao processar distribuição para berçário.' });
     }
 });
+
 
 // Função para calcular o total de ração fornecida
 async function calcularTotalRacaoFornecida() {
@@ -145,37 +146,22 @@ async function atualizarEstoque(quantidade) {
 app.get('/relatorioDiario', async (req, res) => {
     try {
         const { data } = req.query; // Obtenha a data da consulta de parâmetro
-
-        // Exemplo de consulta ao banco de dados para obter o total de ração fornecida
-        const totalRacaoFornecida = await calcularTotalRacaoFornecida();
+        const query = 'SELECT SUM(quantidadeRacao) AS totalRacaoFornecida FROM entradaracao WHERE data = ?';
+        const [results] = await connection.promise().execute(query, [data]);
+        const totalRacaoFornecida = results[0]?.totalRacaoFornecida || 0;
 
         // Exemplo de consulta ao banco de dados para obter o estoque atual
-        const estoqueAtual = await obterEstoqueAtual();
+        const estoqueQuery = 'SELECT quantidade FROM estoque';
+        const [estoqueResults] = await connection.promise().execute(estoqueQuery);
+        const estoqueAtual = estoqueResults[0]?.quantidade || 0;
 
-        // Exemplo de consulta ao banco de dados para obter dados da tabela distribuicaomatrizes
-        const distribuicaoMatrizesQuery = 'SELECT * FROM distribuicaomatrizes WHERE data = ?';
-        const [distribuicaoMatrizesResults] = await connection.promise().execute(distribuicaoMatrizesQuery, [data]);
-
-        // Exemplo de consulta ao banco de dados para obter dados da tabela distribuicaobercario
-        const distribuicaoBercarioQuery = 'SELECT * FROM distribuicaobercario WHERE data = ?';
-        const [distribuicaoBercarioResults] = await connection.promise().execute(distribuicaoBercarioQuery, [data]);
-
-        // Exemplo de consulta ao banco de dados para obter dados da tabela distribuicaomachos
-        const distribuicaoMachosQuery = 'SELECT * FROM distribuicaomachos WHERE data = ?';
-        const [distribuicaoMachosResults] = await connection.promise().execute(distribuicaoMachosQuery, [data]);
-
-        res.json({
-            totalRacaoFornecida,
-            estoqueAtual,
-            distribuicaoMatrizes: distribuicaoMatrizesResults,
-            distribuicaoBercario: distribuicaoBercarioResults,
-            distribuicaoMachos: distribuicaoMachosResults,
-        });
+        res.json({ totalRacaoFornecida, estoqueAtual });
     } catch (error) {
         console.error('Erro ao obter relatório diário:', error);
         res.status(500).json({ message: 'Erro ao obter relatório diário.' });
     }
 });
+
 
 process.on('SIGINT', () => {
     connection.end();

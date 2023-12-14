@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/style.css">
-    <script src="./JS/script.js" defer></script>
+    <script src="../JS/script.js" defer></script>
     <script src="./JS/jQuery 3.7.1.js"></script>
     <title>Relatório Diário</title>
 </head>
@@ -30,20 +30,10 @@
     </header>
     <main>
         <section class="principal">
-            <!-- Formulário para inserir a data -->
-            <form id="formRelatorio">
-                <label for="dataRelatorio">Selecione a data:</label>
-                <input type="date" id="dataRelatorio" name="dataRelatorio" required>
-                <button type="button" onclick="gerarRelatorio()">Gerar Relatório</button>
-            </form>
-
-            <!-- Exibição do Relatório Diário -->
-            <div class="relatorio-diario">
-                <p id="totalRacaoFornecida"></p>
-                <p id="estoqueAtualRelatorio"></p>
-                <p id="distribuicaoMatrizes"></p>
-                <p id="distribuicaoBercario"></p>
-                <p id="distribuicaoMachos"></p>
+            <div class="filtro-data">
+                <label for="dataRelatorio">Selecione a data do relatório:</label>
+                <input type="date" id="dataRelatorio" name="dataRelatorio">
+                <button onclick="gerarRelatorio()">Gerar Relatório</button>
             </div>
             <img src="./IMGs/relatorio.png" alt="Relatorio">
         </section>
