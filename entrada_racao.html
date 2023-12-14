@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'nonce-{your-nonce-goes-here}'">
     <title>Sistema de Suinocultura Theo</title>
     <link rel="stylesheet" href="CSS/Style.css">
     <link rel="stylesheet" href="CSS/reset.css">
@@ -42,9 +43,7 @@
                 <input type="number" id="quantidadeRacao" name="quantidadeRacao" required>
                 <label for="validadeRacao">Data de Validade:</label>
                 <input type="date" id="validadeRacao" name="validadeRacao" required>
-                <button onclick="registrarEntradaRacao()">Registrar Entrada</button>
-
-                <!-- Exibir feedback ou mensagens de erro -->
+                <button id="registrarEntradaRacaoBtn">Registrar Entrada</button>
                 <div id="mensagemEntradaRacao"></div>
             </div>
             <img src="./IMGs/racao_porcos.jpg" alt="Ração Para porcos">
