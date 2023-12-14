@@ -6,12 +6,12 @@ const path = require('path');
 const app = express();
 const PORT = 3002;
 
-// Pegar CSS e IMGs e JS
+// Servir arquivos estáticos (CSS, IMGs, JS)
 app.use('/CSS', express.static(path.join(__dirname, '../CSS')));
 app.use('/IMGs', express.static(path.join(__dirname, '../IMGs')));
 app.use('/JS', express.static(path.join(__dirname, '../JS')));
 
-// Configurando o body-parser
+// Configurar body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// Create routes for each HTML file
+// Criar rotas para cada arquivo HTML
 const htmlFiles = [
     'entrada_racao',
     'controle_estoque',
@@ -50,15 +50,13 @@ app.get('/:page', (req, res) => {
         res.sendFile(path.join(__dirname, `../${page}.html`));
     }
 });
-//Fim Paginas
-
 
 // Configurações do MySQL
 const connection = mysql.createConnection({
     host: '127.0.0.1',
     port: 3306,
     user: 'root',
-    password: 'admin', // Change this to your MySQL password
+    password: 'admin', // Altere isso para a senha do seu MySQL
     database: 'SuinoCulturaTheo',
 });
 
@@ -213,5 +211,5 @@ process.on('SIGINT', () => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Servidor está rodando na porta ${PORT}`);
 });
