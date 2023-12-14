@@ -142,47 +142,52 @@ function registrarEntradaRacao() {
 }
 
 // Função para atualizar o estoque no banco de dados
-function atualizarEstoqueNoBanco(quantidade) {
+async function atualizarEstoqueNoBanco(quantidade) {
     try {
         // Obter o estoque atual do banco de dados
-        fetch('/estoque')
-            .then(response => response.json())
-            .then(data => {
-                const estoqueAtual = parseFloat(data.quantidade);
+        const response = await fetch('/estoque');
+        if (!response.ok) {
+            throw new Error(`Erro ao obter estoque: ${response.statusText}`);
+        }
 
-                // Calcular o novo estoque
-                const novoEstoque = estoqueAtual + quantidade;
+        const data = await response.json();
+        const estoqueAtual = parseFloat(data.quantidade);
 
-                // Enviar uma requisição para atualizar o estoque no banco de dados
-                fetch('/atualizarEstoqueManual', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ quantidade: novoEstoque }),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        obterEExibirEstoqueAtual(); // Atualizar a exibição do estoque
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                    });
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-            });
+        // Calcular o novo estoque
+        const novoEstoque = estoqueAtual + quantidade;
+
+        // Enviar uma requisição para atualizar o estoque no banco de dados
+        const updateResponse = await fetch('/atualizarEstoqueManual', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ quantidade: novoEstoque }),
+        });
+
+        if (!updateResponse.ok) {
+            throw new Error(`Erro ao atualizar estoque: ${updateResponse.statusText}`);
+        }
+
+        const updateData = await updateResponse.json();
+        console.log(updateData);
+
+        // Atualizar a exibição do estoque
+        obterEExibirEstoqueAtual();
     } catch (error) {
-        console.error('Erro ao atualizar estoque no banco:', error);
+        console.error('Erro:', error);
     }
 }
+
 // Função para obter e exibir o estoque atual
 async function obterEExibirEstoqueAtual() {
     try {
-        const response = await fetch('/estoque');
-        const data = await response.json();
-        document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${data.quantidade}`;
+        // Check if the current page is controle_estoque.html
+        if (window.location.pathname.includes('controle_estoque.html')) {
+            const response = await fetch('/estoque');
+            const data = await response.json();
+            document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${data.quantidade}`;
+        }
     } catch (error) {
         console.error('Erro ao obter estoque:', error);
     }
@@ -190,44 +195,30 @@ async function obterEExibirEstoqueAtual() {
 // Função assíncrona para envolver a chamada
 async function fazerChamadaEstoque() {
     try {
-        console.log('Antes do fetch');
-        const response = await fetch('/estoque');
-        console.log('Depois do fetch');
+        // Check if the current page is controle_estoque.html
+        if (window.location.pathname.includes('controle_estoque.html')) {
+            console.log('Antes do fetch');
+            const response = await fetch('/estoque');
+            console.log('Depois do fetch');
 
-        const data = await response.json();
-        console.log('Dados recebidos:', data);
+            const data = await response.json();
+            console.log('Dados recebidos:', data);
 
-        // Atualize o conteúdo da div com o estoque atual
-        document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${data.quantidade}`;
+            // Atualize o conteúdo da div com o estoque atual
+            document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${data.quantidade}`;
+        }
     } catch (error) {
         console.error('Erro ao obter estoque:', error);
     }
 }
-// Chame esta função para obter e exibir o estoque assim que a página carregar
+
 document.addEventListener('DOMContentLoaded', () => {
-    obterEExibirEstoqueAtual();
-    obterRelatorioDiario();
-});
-async function obterRelatorioDiario() {
-    try {
-        const response = await fetch('/relatorioDiario');
-        const data = await response.json();
-        if (data.totalRacaoFornecida !== undefined && data.estoqueAtual !== undefined) {
-            $('#totalRacaoFornecida').html(`Total de Ração Fornecida: ${data.totalRacaoFornecida}`);
-            $('#estoqueAtualRelatorio').html(`Estoque Atual: ${data.estoqueAtual}`);
-        } else {
-            $('#totalRacaoFornecida').html('Erro ao obter relatório diário.');
-            $('#estoqueAtualRelatorio').html('');
-        }
-    } catch (error) {
-        console.error('Erro ao obter relatório diário:', error);
-        $('#totalRacaoFornecida').html('Erro de comunicação com o servidor.');
-        $('#estoqueAtualRelatorio').html('');
+    // Check if the current page is controle_estoque.html
+    if (window.location.pathname.includes('controle_estoque.html')) {
+        obterEExibirEstoqueAtual();
     }
-}
-
-
-// Exemplo: Atualizar relatório diário na carga da página
+});
 fazerChamadaEstoque();
-obterEExibirEstoqueAtual();
-obterRelatorioDiario();
+if (window.location.pathname !== '/entrada_racao.html') {
+    obterEExibirEstoqueAtual();
+}
