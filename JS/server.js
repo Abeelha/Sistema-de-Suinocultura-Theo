@@ -65,14 +65,21 @@ app.get('/distribuicaoBercario', (req, res) => {
     res.sendFile(path.join(__dirname, '../distribuicao_bercario.html'));
 });
 
+app.get('/controle_estoque', (req, res) => {
+    res.sendFile(path.join(__dirname, '../controle_estoque.html'));
+});
+
 // Entrada de Ração
 app.post('/entradaracao', async (req, res) => {
     try {
-        const { nomeRacao, quantidadeRacao, validadeRacao } = req.body;
+        const { quantidadeRacao, validadeRacao } = req.body;
         const quantidade = parseInt(quantidadeRacao);
 
-        const query = 'INSERT INTO entradaracao (nomeRacao, quantidadeRacao, validadeRacao) VALUES (?, ?, ?)';
-        connection.query(query, [nomeRacao, quantidade, validadeRacao], (error, results) => {
+        // Atualizar estoque
+        await atualizarEstoque(quantidade);
+
+        const query = 'INSERT INTO entradaracao (quantidadeRacao, validadeRacao) VALUES (?, ?)';
+        connection.query(query, [quantidade, validadeRacao], (error, results) => {
             if (error) {
                 console.error('Erro ao inserir entrada de ração:', error);
                 res.status(500).json({ message: 'Erro ao processar entrada de ração.' });
@@ -220,7 +227,7 @@ app.post('/distribuicaoBercario', async (req, res) => {
 async function atualizarEstoque(quantidade) {
     try {
         const estoqueAtual = await obterEstoqueAtual();
-        const novoEstoque = estoqueAtual - quantidade;
+        const novoEstoque = estoqueAtual + quantidade;
 
         const query = 'UPDATE estoque SET quantidade = ?';
         connection.query(query, [novoEstoque], (error) => {
@@ -232,7 +239,6 @@ async function atualizarEstoque(quantidade) {
         console.error('Erro ao atualizar estoque:', error);
     }
 }
-
 process.on('SIGINT', () => {
     connection.end();
     process.exit();

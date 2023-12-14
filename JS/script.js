@@ -177,18 +177,22 @@ function atualizarEstoqueNoBanco(quantidade) {
         console.error('Erro ao atualizar estoque no banco:', error);
     }
 }
-// Adicione a chamada fetch('/estoque') onde você deseja obter o estoque
-function obterEExibirEstoqueAtual() {
-    fetch('/estoque')
-        .then(response => response.json())
-        .then(data => {
-            console.log(`Estoque Atual: ${data.quantidade}`);
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            console.log('Erro ao obter estoque.');
-        });
+// Função para obter e exibir o estoque atual
+async function obterEExibirEstoqueAtual() {
+    try {
+        const response = await fetch('/estoque');  // Certifique-se de que esta rota está correta
+        const data = await response.json();
+
+        // Atualize o elemento HTML com o estoque atual
+        document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${data.quantidade}`;
+    } catch (error) {
+        console.error('Erro ao obter estoque:', error);
+    }
 }
+
+// Chame esta função para obter e exibir o estoque assim que a página carregar
+document.addEventListener('DOMContentLoaded', obterEExibirEstoqueAtual);
+
 
 function obterRelatorioDiario() {
     fetch('/relatorioDiario')
