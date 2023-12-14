@@ -3,12 +3,15 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 const path = require('path');
 
 // Configuração do Mongoose
-mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo");
-
+// mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo");
+mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 // Modelos de dados
 const entradaracao = mongoose.model('entradaracao', {
@@ -41,7 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Página de entrada de ração
 app.get('/entradaracao', (req, res) => {
-    res.sendFile(path.join(__dirname, 'entradaracao.html'));
+    res.sendFile(path.join(__dirname, '../entrada_racao.html'));
 });
 
 // Rota para processar entrada de ração
