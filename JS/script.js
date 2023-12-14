@@ -78,42 +78,6 @@ function registrarDistribuicaoMachos() {
     });
 }
 
-// script.js para controle_estoque.html
-
-// Rota para obter estoque atual
-app.get('/estoque', async (req, res) => {
-    try {
-        const estoque = await obterEstoqueAtual();
-        res.status(200).json({ quantidade: estoque });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao obter estoque.' });
-    }
-});
-
-// script.js para relatorio_diario.html
-
-// Exemplo: Função para obter relatório diário
-function obterRelatorioDiario() {
-    fetch('/relatorioDiario')
-        .then(response => response.json())
-        .then(data => {
-            if (data.totalRacaoFornecida !== undefined && data.estoqueAtual !== undefined) {
-                $('#totalRacaoFornecida').html(`Total de Ração Fornecida: ${data.totalRacaoFornecida}`);
-                $('#estoqueAtualRelatorio').html(`Estoque Atual: ${data.estoqueAtual}`);
-            } else {
-                $('#totalRacaoFornecida').html('Erro ao obter relatório diário.');
-                $('#estoqueAtualRelatorio').html('');
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            $('#totalRacaoFornecida').html('Erro de comunicação com o servidor.');
-            $('#estoqueAtualRelatorio').html('');
-        });
-}
-// script.js para distribuicao_bercario.html
-
 // Função para registrar distribuição para berçário
 function registrarDistribuicaoBercario() {
     // Obter dados do formulário
@@ -143,7 +107,109 @@ function registrarDistribuicaoBercario() {
             document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro de comunicação com o servidor.</p>';
         });
 }
+// script.js para controle_estoque.html
+// script.js para entraca_racao.html
+
+// Função para registrar entrada de ração
+function registrarEntradaRacao() {
+    const nomeRacao = $('#nomeRacao').val();
+    const quantidadeRacao = $('#quantidadeRacao').val();
+    const validadeRacao = $('#validadeRacao').val();
+
+    const formData = {
+        nomeRacao,
+        quantidadeRacao,
+        validadeRacao,
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '/entradaracao',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function (data) {
+            console.log(data);
+            $('#mensagemEntradaRacao').text(data.message);
+
+            // Calcular a quantidade total de ração fornecida
+            const quantidadeTotal = parseFloat(quantidadeRacao);
+
+            // Atualizar o estoque no banco de dados
+            atualizarEstoqueNoBanco(quantidadeTotal);
+        },
+        error: function (error) {
+            console.error('Erro:', error);
+        },
+    });
+}
+
+// Função para atualizar o estoque no banco de dados
+function atualizarEstoqueNoBanco(quantidade) {
+    try {
+        // Obter o estoque atual do banco de dados
+        fetch('/estoque')
+            .then(response => response.json())
+            .then(data => {
+                const estoqueAtual = parseFloat(data.quantidade);
+
+                // Calcular o novo estoque
+                const novoEstoque = estoqueAtual + quantidade;
+
+                // Enviar uma requisição para atualizar o estoque no banco de dados
+                fetch('/atualizarEstoqueManual', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ quantidade: novoEstoque }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        obterEExibirEstoqueAtual(); // Atualizar a exibição do estoque
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                    });
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    } catch (error) {
+        console.error('Erro ao atualizar estoque no banco:', error);
+    }
+}
+function obterEExibirEstoqueAtual() {
+    fetch('/estoque')
+        .then(response => response.json())
+        .then(data => {
+            $('#estoqueAtual').text(`Estoque Atual: ${data.quantidade}`);
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            $('#estoqueAtual').text('Erro ao obter estoque.');
+        });
+}
+function obterRelatorioDiario() {
+    fetch('/relatorioDiario')
+        .then(response => response.json())
+        .then(data => {
+            if (data.totalRacaoFornecida !== undefined && data.estoqueAtual !== undefined) {
+                $('#totalRacaoFornecida').html(`Total de Ração Fornecida: ${data.totalRacaoFornecida}`);
+                $('#estoqueAtualRelatorio').html(`Estoque Atual: ${data.estoqueAtual}`);
+            } else {
+                $('#totalRacaoFornecida').html('Erro ao obter relatório diário.');
+                $('#estoqueAtualRelatorio').html('');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            $('#totalRacaoFornecida').html('Erro de comunicação com o servidor.');
+            $('#estoqueAtualRelatorio').html('');
+        });
+}
 
 
 // Exemplo: Atualizar relatório diário na carga da página
+obterEExibirEstoqueAtual();
 obterRelatorioDiario();

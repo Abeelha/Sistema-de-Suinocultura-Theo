@@ -188,27 +188,22 @@ async function obterEstoqueAtual() {
 }
 
 // Função para atualizar o estoque
-async function atualizarEstoque(tipo, quantidade) {
+async function atualizarEstoque(quantidade) {
     try {
         const estoqueAtual = await obterEstoqueAtual();
-        let novoEstoque;
-
-        if (tipo === 'Matrizes' || tipo === 'Machos') {
-            novoEstoque = estoqueAtual - quantidade;
-        } else {
-            novoEstoque = estoqueAtual;
-        }
+        const novoEstoque = estoqueAtual - quantidade;
 
         const query = 'UPDATE estoque SET quantidade = ?';
         connection.query(query, [novoEstoque], (error) => {
             if (error) {
-                console.error(`Erro ao atualizar estoque para ${tipo}:`, error);
+                console.error('Erro ao atualizar estoque:', error);
             }
         });
     } catch (error) {
-        console.error(`Erro ao atualizar estoque para ${tipo}:`, error);
+        console.error('Erro ao atualizar estoque:', error);
     }
 }
+
 // ... (seções anteriores do arquivo)
 
 // Página de distribuição para berçário
