@@ -48,7 +48,6 @@ htmlFiles.forEach((file) => {
     });
 });
 
-// Redirecionar /controle_estoque para /controle_estoque.html
 // Rota para obter o estoque atual
 app.get('/estoque', async (req, res) => {
     try {
