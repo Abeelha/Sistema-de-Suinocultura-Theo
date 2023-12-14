@@ -1,35 +1,50 @@
 // script.js
 
 function registrarEntradaRacao() {
-    // Get form data
     const nomeRacao = document.getElementById('nomeRacao').value;
     const quantidadeRacao = document.getElementById('quantidadeRacao').value;
     const validadeRacao = document.getElementById('validadeRacao').value;
 
-    // Create an object with the form data
     const formData = {
         nomeRacao,
         quantidadeRacao,
         validadeRacao
     };
 
-
-    // Make a POST request to the server
-    fetch('/entradaracao', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Handle the response from the server
+    $.ajax({
+        type: 'POST',
+        url: '/entradaracao',
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        success: function (data) {
             console.log(data);
-            // Display a message on the HTML page based on the response
             document.getElementById('mensagemEntradaRacao').innerText = data.message;
-        })
-        .catch(error => {
+        },
+        error: function (error) {
             console.error('Error:', error);
-        });
+        }
+    });
+}
+
+function realizarDistribuicao(tabela) {
+    const quantidade = document.getElementById(`quantidade${tabela}`).value;
+
+    const formData = {
+        tabela,
+        quantidade
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '/distribuicao',
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        success: function (data) {
+            console.log(data);
+            document.getElementById(`mensagem${tabela}`).innerText = data.message;
+        },
+        error: function (error) {
+            console.error('Error:', error);
+        }
+    });
 }
