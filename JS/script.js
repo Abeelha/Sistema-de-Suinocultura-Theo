@@ -13,6 +13,7 @@ function registrarEntradaRacao() {
         validadeRacao
     };
 
+
     // Make a POST request to the server
     fetch('/entradaracao', {
         method: 'POST',

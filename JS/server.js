@@ -5,18 +5,18 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const app = express();
-const PORT = 3001;
+const PORT = 3002;
 
 
 // Modelos de dados Entrada Ração
 const entradaracaoSchema = new mongoose.Schema({
-    nome: String,
-    total: Number,
+    nomeRacao: String,
+    quantidadeRacao: Number,
+    validadeRacao: Date,
     data: { type: Date, default: Date.now },
 });
 
 const entradaracao = mongoose.model('entradaracao', entradaracaoSchema);
-
 
 // Configuração do Mongoose
 // mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo");
@@ -24,7 +24,6 @@ mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-
 
 const DistribuicaoMatrizes = mongoose.model('DistribuicaoMatrizes', {
     quantidade: Number,
@@ -50,22 +49,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // //Pegar CSS e IMGs e JS
-// app.use('/css', express.static(path.join(__dirname, '../CSS')));
-// app.use('/imgs', express.static(path.join(__dirname, '../IMGs')));
-// app.use(express.static(path.join(__dirname)));
-// Serve static files from the root directory
-// app.use(express.static(path.join(__dirname, '..')));
-
-// Serve static files for CSS, IMGs, and JS separately
 app.use('/CSS', express.static(path.join(__dirname, '../CSS')));
 app.use('/IMGs', express.static(path.join(__dirname, '../IMGs')));
 app.use('/JS', express.static(path.join(__dirname, '../JS')));
 
-
-
 //Pegar JS
 app.use(express.static(path.join(__dirname, 'JS')));
-
 
 // Página de entrada de ração
 app.get('/entradaracao', (req, res) => {
@@ -75,16 +64,17 @@ app.get('/entradaracao', (req, res) => {
 // Rota para processar entrada de ração
 app.post('/entradaracao', async (req, res) => {
     try {
-        const { nome, total, data } = req.body;
+        const { nomeRacao, quantidadeRacao, validadeRacao } = req.body;
 
-        // Convert 'total' to a number
-        const quantidade = parseInt(total);
+        // Convert 'quantidadeRacao' to a number
+        const quantidade = parseInt(quantidadeRacao);
 
         // Save entrada to the database with data
         const entradaracaoEntry = new entradaracao({
-            nome,
-            total: quantidade,
-            data: new Date(data),  // Assuming 'data' is a string representing a date
+            nomeRacao,
+            quantidadeRacao: quantidade,
+            validadeRacao,
+            data: new Date(),  // Assuming you want to use the current date
         });
 
         await entradaracaoEntry.save();
@@ -95,8 +85,6 @@ app.post('/entradaracao', async (req, res) => {
         res.status(500).json({ message: 'Erro ao processar entrada de ração.' });
     }
 });
-
-
 
 // Página de distribuição para matrizes
 app.get('/distribuicaoMatrizes', (req, res) => {
