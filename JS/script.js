@@ -67,7 +67,7 @@ function registrarDistribuicaoMatrizes() {
 // Função para registrar distribuição para berçário
 function registrarDistribuicaoBercario() {
     // Obter dados do formulário
-    const quantidade = $('#quantidadeBercario').val();
+    const quantidade = document.getElementById('quantidadeBercario').value;
 
     // Fazer uma requisição POST para o servidor usando AJAX
     fetch('/distribuicaoBercario', {
@@ -82,17 +82,18 @@ function registrarDistribuicaoBercario() {
             // Lidar com a resposta do servidor
             if (data.message) {
                 // Exibir mensagem de sucesso
-                $('#mensagemDistribuicaoBercario').html(`<p>${data.message}</p>`);
+                document.getElementById('mensagemDistribuicaoBercario').innerHTML = `<p>${data.message}</p>`;
             } else {
                 // Exibir mensagem de erro
-                $('#mensagemDistribuicaoBercario').html('<p>Erro ao processar distribuição para berçário.</p>');
+                document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro ao processar distribuição para berçário.</p>';
             }
         })
         .catch(error => {
             console.error('Erro:', error);
-            $('#mensagemDistribuicaoBercario').html('<p>Erro de comunicação com o servidor.</p>');
+            document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro de comunicação com o servidor.</p>';
         });
 }
+
 
 // script.js distribuicao_machos.html
 
