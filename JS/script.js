@@ -1,9 +1,11 @@
 // script.js entraca_racao.html
+
+// Função para registrar entrada de ração
 function registrarEntradaRacao() {
     // Obter dados do formulário
-    const nomeRacao = document.getElementById('nomeRacao').value;
-    const quantidadeRacao = document.getElementById('quantidadeRacao').value;
-    const validadeRacao = document.getElementById('validadeRacao').value;
+    const nomeRacao = $('#nomeRacao').val();
+    const quantidadeRacao = $('#quantidadeRacao').val();
+    const validadeRacao = $('#validadeRacao').val();
 
     // Criar objeto com os dados do formulário
     const formData = {
@@ -31,13 +33,15 @@ function registrarEntradaRacao() {
 }
 
 // script.js distribuicao_matrizes.html
-function distribuirRacaoMatrizes() {
+
+// Função para distribuir ração para matrizes
+function registrarDistribuicaoMatrizes() {
     // Obter dados do formulário
-    const quantidade = document.getElementById('quantidadeMatrizes').value;
+    const quantidadeMatrizes = $('#quantidadeMatrizes').val();
 
     // Criar objeto com os dados do formulário
     const formData = {
-        quantidade,
+        quantidade: quantidadeMatrizes,
     };
 
     // Fazer uma requisição POST para o servidor usando AJAX
@@ -58,42 +62,14 @@ function distribuirRacaoMatrizes() {
     });
 }
 
-function registrarDistribuicaoMatrizes() {
-    // Get form data
-    const quantidadeMatrizes = document.getElementById('quantidadeMatrizes').value;
-
-    // Create an object with the form data
-    const formData = {
-        quantidade: quantidadeMatrizes,
-    };
-
-    // Make a POST request to the server
-    fetch('/distribuicaoMatrizes', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Handle the response from the server
-            console.log(data);
-            // Display a message on the HTML page based on the response
-            document.getElementById('mensagemDistribuicaoMatrizes').innerText = data.message;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-
 // script.js distribuicao_bercario.html
-function registrarDistribuicaoBercario() {
-    // Get data from the form
-    const quantidade = document.getElementById('quantidadeBercario').value;
 
-    // Example: Performing AJAX request to the server
-    // Modify this part according to your server-side logic
+// Função para registrar distribuição para berçário
+function registrarDistribuicaoBercario() {
+    // Obter dados do formulário
+    const quantidade = $('#quantidadeBercario').val();
+
+    // Fazer uma requisição POST para o servidor usando AJAX
     fetch('/distribuicaoBercario', {
         method: 'POST',
         headers: {
@@ -103,28 +79,29 @@ function registrarDistribuicaoBercario() {
     })
         .then(response => response.json())
         .then(data => {
-            // Handle the response from the server
+            // Lidar com a resposta do servidor
             if (data.message) {
-                // Display success message
-                document.getElementById('mensagemDistribuicaoBercario').innerHTML = `<p>${data.message}</p>`;
+                // Exibir mensagem de sucesso
+                $('#mensagemDistribuicaoBercario').html(`<p>${data.message}</p>`);
             } else {
-                // Display error message
-                document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro ao processar distribuição para berçário.</p>';
+                // Exibir mensagem de erro
+                $('#mensagemDistribuicaoBercario').html('<p>Erro ao processar distribuição para berçário.</p>');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro de comunicação com o servidor.</p>';
+            console.error('Erro:', error);
+            $('#mensagemDistribuicaoBercario').html('<p>Erro de comunicação com o servidor.</p>');
         });
 }
+
 // script.js distribuicao_machos.html
 
+// Função para registrar distribuição para machos
 function registrarDistribuicaoMachos() {
-    // Get data from the form
-    const quantidade = document.getElementById('quantidadeMachos').value;
+    // Obter dados do formulário
+    const quantidade = $('#quantidadeMachos').val();
 
-    // Example: Performing AJAX request to the server
-    // Modify this part according to your server-side logic
+    // Fazer uma requisição POST para o servidor usando AJAX
     fetch('/distribuicaoMachos', {
         method: 'POST',
         headers: {
@@ -134,51 +111,50 @@ function registrarDistribuicaoMachos() {
     })
         .then(response => response.json())
         .then(data => {
-            // Handle the response from the server
+            // Lidar com a resposta do servidor
             if (data.message) {
-                // Display success message
-                document.getElementById('mensagemDistribuicaoMachos').innerHTML = `<p>${data.message}</p>`;
+                // Exibir mensagem de sucesso
+                $('#mensagemDistribuicaoMachos').html(`<p>${data.message}</p>`);
             } else {
-                // Display error message
-                document.getElementById('mensagemDistribuicaoMachos').innerHTML = '<p>Erro ao processar distribuição para machos.</p>';
+                // Exibir mensagem de erro
+                $('#mensagemDistribuicaoMachos').html('<p>Erro ao processar distribuição para machos.</p>');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('mensagemDistribuicaoMachos').innerHTML = '<p>Erro de comunicação com o servidor.</p>';
+            console.error('Erro:', error);
+            $('#mensagemDistribuicaoMachos').html('<p>Erro de comunicação com o servidor.</p>');
         });
 }
+
 // script.js for controle_estoque.html
 
-// Example: Function to get current stock
+// Exemplo: Função para obter estoque atual
 function obterEstoqueAtual() {
-    // Performing AJAX request to the server
-    // Modify this part according to your server-side logic
+    // Fazer uma requisição AJAX para o servidor
     fetch('/estoque')
         .then(response => response.json())
         .then(data => {
-            // Handle the response from the server
+            // Lidar com a resposta do servidor
             if (data.quantidade !== undefined) {
-                // Display current stock
-                document.getElementById('estoqueAtual').innerHTML = `Quantidade Atual: ${data.quantidade}`;
+                // Exibir estoque atual
+                $('#estoqueAtual').html(`Quantidade Atual: ${data.quantidade}`);
             } else {
-                // Display error message
-                document.getElementById('estoqueAtual').innerHTML = 'Erro ao obter estoque atual.';
+                // Exibir mensagem de erro
+                $('#estoqueAtual').html('Erro ao obter estoque atual.');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('estoqueAtual').innerHTML = 'Erro de comunicação com o servidor.';
+            console.error('Erro:', error);
+            $('#estoqueAtual').html('Erro de comunicação com o servidor.');
         });
 }
 
-// Example: Function to update stock
+// Exemplo: Função para atualizar estoque
 function atualizarEstoque() {
-    // Get data from the form
-    const quantidade = document.getElementById('quantidadeEstoque').value;
+    // Obter dados do formulário
+    const quantidade = $('#quantidadeEstoque').val();
 
-    // Performing AJAX request to the server
-    // Modify this part according to your server-side logic
+    // Fazer uma requisição AJAX para o servidor
     fetch('/atualizarEstoque', {
         method: 'POST',
         headers: {
@@ -188,53 +164,51 @@ function atualizarEstoque() {
     })
         .then(response => response.json())
         .then(data => {
-            // Handle the response from the server
+            // Lidar com a resposta do servidor
             if (data.message) {
-                // Display success message
-                document.getElementById('mensagemAtualizarEstoque').innerHTML = `<p>${data.message}</p>`;
-                // Refresh current stock after update
+                // Exibir mensagem de sucesso
+                $('#mensagemAtualizarEstoque').html(`<p>${data.message}</p>`);
+                // Atualizar estoque atual após a atualização
                 obterEstoqueAtual();
             } else {
-                // Display error message
-                document.getElementById('mensagemAtualizarEstoque').innerHTML = '<p>Erro ao atualizar estoque.</p>';
+                // Exibir mensagem de erro
+                $('#mensagemAtualizarEstoque').html('<p>Erro ao atualizar estoque.</p>');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('mensagemAtualizarEstoque').innerHTML = '<p>Erro de comunicação com o servidor.</p>';
+            console.error('Erro:', error);
+            $('#mensagemAtualizarEstoque').html('<p>Erro de comunicação com o servidor.</p>');
         });
 }
 
-// Example: Refresh stock on page load
+// Exemplo: Atualizar estoque na carga da página
 obterEstoqueAtual();
 
 // script.js for relatorio_diario.html
 
-// Example: Function to get daily report
+// Exemplo: Função para obter relatório diário
 function obterRelatorioDiario() {
-    // Performing AJAX request to the server
-    // Modify this part according to your server-side logic
+    // Fazer uma requisição AJAX para o servidor
     fetch('/relatorioDiario')
         .then(response => response.json())
         .then(data => {
-            // Handle the response from the server
+            // Lidar com a resposta do servidor
             if (data.totalRacaoFornecida !== undefined && data.estoqueAtual !== undefined) {
-                // Display total feed provided and current stock
-                document.getElementById('totalRacaoFornecida').innerHTML = `Total de Ração Fornecida: ${data.totalRacaoFornecida}`;
-                document.getElementById('estoqueAtualRelatorio').innerHTML = `Estoque Atual: ${data.estoqueAtual}`;
+                // Exibir total de ração fornecida e estoque atual
+                $('#totalRacaoFornecida').html(`Total de Ração Fornecida: ${data.totalRacaoFornecida}`);
+                $('#estoqueAtualRelatorio').html(`Estoque Atual: ${data.estoqueAtual}`);
             } else {
-                // Display error message
-                document.getElementById('totalRacaoFornecida').innerHTML = 'Erro ao obter relatório diário.';
-                document.getElementById('estoqueAtualRelatorio').innerHTML = '';
+                // Exibir mensagem de erro
+                $('#totalRacaoFornecida').html('Erro ao obter relatório diário.');
+                $('#estoqueAtualRelatorio').html('');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('totalRacaoFornecida').innerHTML = 'Erro de comunicação com o servidor.';
-            document.getElementById('estoqueAtualRelatorio').innerHTML = '';
+            console.error('Erro:', error);
+            $('#totalRacaoFornecida').html('Erro de comunicação com o servidor.');
+            $('#estoqueAtualRelatorio').html('');
         });
 }
 
-// Example: Refresh daily report on page load
+// Exemplo: Atualizar relatório diário na carga da página
 obterRelatorioDiario();
-
