@@ -144,5 +144,6 @@ function registrarDistribuicaoBercario() {
         });
 }
 
+
 // Exemplo: Atualizar relatório diário na carga da página
 obterRelatorioDiario();
