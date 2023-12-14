@@ -1,10 +1,12 @@
+// Projeto Theodoro  bertol Suinocultura
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 const PORT = 3001;
-const path = require('path');
+
 
 // Configuração do Mongoose
 // mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo");
@@ -42,9 +44,19 @@ const Estoque = mongoose.model('Estoque', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//Pegar CSS e IMGs
-app.use('/css', express.static(path.join(__dirname, '../CSS')));
-app.use('/imgs', express.static(path.join(__dirname, '../IMGs')));
+// //Pegar CSS e IMGs e JS
+// app.use('/css', express.static(path.join(__dirname, '../CSS')));
+// app.use('/imgs', express.static(path.join(__dirname, '../IMGs')));
+// app.use(express.static(path.join(__dirname)));
+// Serve static files from the root directory
+// app.use(express.static(path.join(__dirname, '..')));
+
+// Serve static files for CSS, IMGs, and JS separately
+app.use('/CSS', express.static(path.join(__dirname, '../CSS')));
+app.use('/IMGs', express.static(path.join(__dirname, '../IMGs')));
+app.use('/JS', express.static(path.join(__dirname, '../JS')));
+
+
 
 //Pegar JS
 app.use(express.static(path.join(__dirname, 'JS')));
