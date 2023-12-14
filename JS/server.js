@@ -142,6 +142,27 @@ async function atualizarEstoque(quantidade) {
     }
 }
 
+// Rota para obter o relatório diário com base na data
+app.get('/relatorioDiario', async (req, res) => {
+    try {
+        const { data } = req.query; // Obtenha a data da consulta de parâmetro
+        const query = 'SELECT SUM(quantidadeRacao) AS totalRacaoFornecida FROM entradaracao WHERE data = ?';
+        const [results] = await connection.promise().execute(query, [data]);
+        const totalRacaoFornecida = results[0]?.totalRacaoFornecida || 0;
+
+        // Exemplo de consulta ao banco de dados para obter o estoque atual
+        const estoqueQuery = 'SELECT quantidade FROM estoque';
+        const [estoqueResults] = await connection.promise().execute(estoqueQuery);
+        const estoqueAtual = estoqueResults[0]?.quantidade || 0;
+
+        res.json({ totalRacaoFornecida, estoqueAtual });
+    } catch (error) {
+        console.error('Erro ao obter relatório diário:', error);
+        res.status(500).json({ message: 'Erro ao obter relatório diário.' });
+    }
+});
+
+
 process.on('SIGINT', () => {
     connection.end();
     process.exit();
