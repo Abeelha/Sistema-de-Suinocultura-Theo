@@ -208,4 +208,33 @@ function atualizarEstoque() {
 // Example: Refresh stock on page load
 obterEstoqueAtual();
 
+// script.js for relatorio_diario.html
+
+// Example: Function to get daily report
+function obterRelatorioDiario() {
+    // Performing AJAX request to the server
+    // Modify this part according to your server-side logic
+    fetch('/relatorioDiario')
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the server
+            if (data.totalRacaoFornecida !== undefined && data.estoqueAtual !== undefined) {
+                // Display total feed provided and current stock
+                document.getElementById('totalRacaoFornecida').innerHTML = `Total de Ração Fornecida: ${data.totalRacaoFornecida}`;
+                document.getElementById('estoqueAtualRelatorio').innerHTML = `Estoque Atual: ${data.estoqueAtual}`;
+            } else {
+                // Display error message
+                document.getElementById('totalRacaoFornecida').innerHTML = 'Erro ao obter relatório diário.';
+                document.getElementById('estoqueAtualRelatorio').innerHTML = '';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('totalRacaoFornecida').innerHTML = 'Erro de comunicação com o servidor.';
+            document.getElementById('estoqueAtualRelatorio').innerHTML = '';
+        });
+}
+
+// Example: Refresh daily report on page load
+obterRelatorioDiario();
 
