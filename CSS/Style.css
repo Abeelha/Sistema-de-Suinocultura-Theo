@@ -1,11 +1,36 @@
+:root {
+    --texto: #f8f9fa;
+    --background: #343a40;
+}
+
+
+
 body {
+    margin: 0;
     font-family: 'Montserrat', sans-serif;
 }
 
 header {
-    background: #bbbbbb;
+    background: var(--background);
     padding: 20px 0;
 }
+
+/* Parallax */
+.parallax {
+    /* The image used */
+    background-image: url('../IMGs/porco.jpg');
+
+    /* Full height */
+    height: 100%;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* FIM Parallax */
 
 .caixa {
     position: relative;
