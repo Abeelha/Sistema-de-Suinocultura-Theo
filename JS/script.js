@@ -180,7 +180,9 @@ function atualizarEstoqueNoBanco(quantidade) {
 // Função para obter e exibir o estoque atual
 async function obterEExibirEstoqueAtual() {
     try {
-        const response = await fetch('/estoque');  // Certifique-se de que esta rota está correta
+        console.log('Antes do fetch');
+        const response = await fetch('/estoque');
+        console.log('Depois do fetch');
         const data = await response.json();
 
         // Atualize o elemento HTML com o estoque atual
@@ -189,6 +191,8 @@ async function obterEExibirEstoqueAtual() {
         console.error('Erro ao obter estoque:', error);
     }
 }
+
+
 
 // Chame esta função para obter e exibir o estoque assim que a página carregar
 document.addEventListener('DOMContentLoaded', obterEExibirEstoqueAtual);

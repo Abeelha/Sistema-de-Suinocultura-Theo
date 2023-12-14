@@ -65,9 +65,17 @@ app.get('/distribuicaoBercario', (req, res) => {
     res.sendFile(path.join(__dirname, '../distribuicao_bercario.html'));
 });
 
-app.get('/controle_estoque', (req, res) => {
-    res.sendFile(path.join(__dirname, '../controle_estoque.html'));
+// Rota para obter o estoque atual
+app.get('/estoque', async (req, res) => {
+    try {
+        const estoque = await obterEstoqueAtual();
+        res.status(200).json({ quantidade: estoque });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao obter estoque.' });
+    }
 });
+
 
 // Entrada de Ração
 app.post('/entradaracao', async (req, res) => {
