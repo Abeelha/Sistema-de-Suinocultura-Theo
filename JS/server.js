@@ -12,7 +12,7 @@ mongoose.connect("mongodb://localhost:27017/SuinoCulturaTheo", {
     useUnifiedTopology: true,
 });
 // Modelos de dados
-const EntradaRacao = mongoose.model('EntradaRacao', {
+const entradaracao = mongoose.model('entradaracao', {
     quantidade: Number,
     data: { type: Date, default: Date.now },
 });
@@ -41,18 +41,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Página de entrada de ração
-app.get('/entradaRacao', (req, res) => {
-    res.sendFile(path.join(__dirname, '../entradaRacao.html'));
+app.get('/entradaracao', (req, res) => {
+    res.sendFile(path.join(__dirname, '../entradaracao.html'));
 });
 
 // Rota para processar entrada de ração
-app.post('/entradaRacao', async (req, res) => {
+app.post('/entradaracao', async (req, res) => {
     try {
         const { quantidade } = req.body;
 
         // Salvar entrada no banco de dados
-        const entradaRacao = new EntradaRacao({ quantidade });
-        await entradaRacao.save();
+        const entradaracao = new entradaracao({ quantidade });
+        await entradaracao.save();
 
         res.status(201).json({ message: 'Entrada de ração registrada com sucesso!' });
     } catch (error) {
@@ -135,7 +135,7 @@ app.get('/relatorioDiario', async (req, res) => {
 // Função para calcular o total de ração fornecida
 async function calcularTotalRacaoFornecida() {
     try {
-        const entradas = await EntradaRacao.find();
+        const entradas = await entradaracao.find();
         return entradas.reduce((total, entrada) => total + entrada.quantidade, 0);
     } catch (error) {
         console.error('Erro ao calcular total de ração fornecida:', error);
