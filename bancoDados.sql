@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS distribuicaomachos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     quantidade INT,
     data DATETIME DEFAULT CURRENT_TIMESTAMP
-);distribuicaobercarioquantidadedata
+);
 
 CREATE TABLE IF NOT EXISTS estoque (
     id INT AUTO_INCREMENT PRIMARY KEY,

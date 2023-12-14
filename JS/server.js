@@ -60,8 +60,54 @@ app.get('/estoque', async (req, res) => {
     }
 });
 
+app.post('/distribuicaoMatrizes', async (req, res) => {
+    try {
+        // Extract data from the request body
+        const { quantidade } = req.body;
 
-// Rota para processar distribuição para berçário
+        // Atualizar estoque (adjust as needed based on your business logic)
+        await atualizarEstoque('Matrizes', quantidade);
+
+        // Salvar distribuição no banco de dados
+        const insertQuery = 'INSERT INTO distribuicaomatrizes (quantidade) VALUES (?)';
+        connection.query(insertQuery, [quantidade], (error, results) => {
+            if (error) {
+                console.error('Erro ao inserir distribuição para matrizes:', error);
+                res.status(500).json({ message: 'Erro ao processar distribuição para matrizes.' });
+            } else {
+                res.status(201).json({ message: 'Distribuição para matrizes registrada com sucesso!' });
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao processar distribuição para matrizes:', error);
+        res.status(500).json({ message: 'Erro ao processar distribuição para matrizes.' });
+    }
+});
+
+app.post('/distribuicaoMachos', async (req, res) => {
+    try {
+        // Extract data from the request body
+        const { quantidade } = req.body;
+
+        // Atualizar estoque (adjust as needed based on your business logic)
+        await atualizarEstoque('Machos', quantidade);
+
+        // Salvar distribuição no banco de dados
+        const insertQuery = 'INSERT INTO distribuicaomachos (quantidade) VALUES (?)';
+        connection.query(insertQuery, [quantidade], (error, results) => {
+            if (error) {
+                console.error('Erro ao inserir distribuição para machos:', error);
+                res.status(500).json({ message: 'Erro ao processar distribuição para machos.' });
+            } else {
+                res.status(201).json({ message: 'Distribuição para machos registrada com sucesso!' });
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao processar distribuição para machos:', error);
+        res.status(500).json({ message: 'Erro ao processar distribuição para machos.' });
+    }
+});
+
 app.post('/distribuicaoBercario', async (req, res) => {
     try {
         const { quantidade } = req.body;
