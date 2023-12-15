@@ -177,9 +177,6 @@ async function atualizarEstoque(novoEstoque) {
 // Rota para atualizar o estoque manualmente
 app.post('/atualizarEstoqueManual', async (req, res) => {
     try {
-        // Lógica para atualizar o estoque manualmente aqui
-        // Por exemplo, você pode chamar obterEExibirEstoqueAtual() para buscar o estoque mais recente do banco de dados
-
         // Supondo uma atualização bem-sucedida
         res.status(200).json({ success: true, message: 'Estoque atualizado manualmente.' });
     } catch (error) {
