@@ -2,41 +2,41 @@ Segue a atividade para ser entregue até amanhã, dia 14/12/23 às 18:00:
 Questão: Desenvolvimento de Sistema de Suinocultura
 
 
-TODO
+DONE
 Você deve criar um sistema web para gerenciamento de suinocultura que atenda aos requisitos especificados abaixo.
 
 Requisitos Funcionais:
 
-TODO
+DONE
 Entrada de Ração:
 
 Crie uma página que permita a entrada da quantidade de ração recebida.
 Armazene essas informações no banco de dados.
 Distribuição para Matrizes:
 
-TODO
+DONE
 Crie uma página que permita a distribuição da ração para as matrizes, indicando a quantidade a ser fornecida para cada matriz.
 Atualize o estoque de ração no banco de dados.
 Distribuição para Berçário e Machos:
 
-TODO
+DONE
 Crie páginas distintas para a distribuição de ração no berçário e para os machos, com a capacidade de inserir a quantidade específica para cada um.
 Atualize o estoque de ração no banco de dados.
 Controle de Estoque:
 
-TODO
+DONE
 Mantenha um controle de estoque atualizado no banco de dados.
 Relatório Diário:
 
-TODO
+DONE
 Crie uma página que exiba um relatório diário com a quantidade total de ração fornecida e a quantidade restante no estoque.
 Semáforo de Entrada de Ração:
 
-TODO
+DONE
 Implemente um semáforo na página de entrada de ração que mude de cor conforme a quantidade de ração inserida, indicando visualmente se a quantidade é suficiente (verde), moderada (amarelo) ou insuficiente (vermelho).
 Requisitos Técnicos:
 
-TODO
+DONE
 Use HTML, CSS e JavaScript para a construção da interface.
 Utilize um banco de dados para armazenar as informações sobre ração, distribuição, estoque e relatórios.
 Use AJAX para comunicação assíncrona com o servidor.
