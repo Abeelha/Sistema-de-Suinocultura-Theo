@@ -122,24 +122,6 @@ nav {
 
 /* FIM Navegação */
 
-/* Parallax */
-.parallax {
-    /* The image used */
-    background-image: url('../IMGs/porco.jpg');
-
-    /* Full height */
-    height: 50%;
-
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-/* FIM Parallax */
-
-
 .titulo-principal {
     text-align: center;
     font-size: 2em;
@@ -157,13 +139,95 @@ nav {
     margin: 1em;
 }
 
-.porco-feliz {
+/* index */
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    perspective: 1px;
+    transform-style: preserve-3d;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.parallax {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.section1 {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    transform-style: preserve-3d;
+    background: url("outer-layer-blur.png") top center;
+    /* Add this line for the background image */
+    background-size: cover;
+    /* Adjust as needed */
+}
+
+.section1::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url("../IMGs/base.jpg") top center;
+    background-size: cover;
+    transform: translateZ(-1px) scale(2.2);
+    filter: blur(2px);
+}
+
+.section1::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url("../IMGs/outer-layer-blur.png") top center;
+    background-size: cover;
+}
+
+.section1 .text {
+    position: absolute;
+    font-family: 'Franklin Gothic Heavy';
+    font-size: 4vw;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), 5px 5px 70px rgba(255, 255, 255, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(-0.5px) scale(1.5, 1.6);
+}
+
+
+.main {
+    width: 100%;
+    padding: 20px;
+}
+
+.principal-index {
+    text-align: center;
+    margin-top: 50px;
+    width: 50%;
+}
+
+.titulo-principal-index {
+    font-size: 2em;
+    color: var(--texto);
+}
+
+.porco-feliz-index {
     width: 120px;
     float: left;
     margin: 0 20px 20px 0;
     box-shadow: 10px 10px 10px #000000;
 }
 
+/* FIM index */
 .mapa {
     padding: 3em 0;
 }
