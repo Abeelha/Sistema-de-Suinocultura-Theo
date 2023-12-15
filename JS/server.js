@@ -5,14 +5,17 @@ const path = require('path');
 const app = express();
 const PORT = 3002;
 
+// Configuração de arquivos estáticos
 app.use(express.static(path.join(__dirname, '../')));
 app.use('/CSS', express.static(path.join(__dirname, '../CSS')));
 app.use('/IMGs', express.static(path.join(__dirname, '../IMGs')));
 app.use('/JS', express.static(path.join(__dirname, '../JS')));
 
+// Configuração de middleware para processar JSON e URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Configuração da conexão com o MySQL
 const connection = mysql.createConnection({
     host: '127.0.0.1',
     port: 3306,
@@ -21,6 +24,7 @@ const connection = mysql.createConnection({
     database: 'suinoculturaTheo',
 });
 
+// Conectar ao MySQL
 connection.connect(err => {
     if (err) {
         console.error('Erro ao conectar ao MySQL:', err);
@@ -50,6 +54,7 @@ htmlFiles.forEach((file) => {
     });
 });
 
+// Rota para obter o total de entrada de ração
 app.get('/totalEntradaRacao', async (req, res) => {
     try {
         const totalEntradaRacao = await calcularTotalEntradaRacao();
@@ -60,7 +65,7 @@ app.get('/totalEntradaRacao', async (req, res) => {
     }
 });
 
-// Route handler for getting the total distribution for Berçário
+// Rota para obter o total de distribuição para Berçário
 app.get('/totalDistribuicao/bercario', async (req, res) => {
     try {
         const totalDistribuicaoBercario = await calcularTotalDistribuicao('Bercario');
@@ -71,7 +76,7 @@ app.get('/totalDistribuicao/bercario', async (req, res) => {
     }
 });
 
-// Route handler for getting the total distribution for Machos
+// Rota para obter o total de distribuição para Machos
 app.get('/totalDistribuicao/machos', async (req, res) => {
     try {
         const totalDistribuicaoMachos = await calcularTotalDistribuicao('Machos');
@@ -82,7 +87,7 @@ app.get('/totalDistribuicao/machos', async (req, res) => {
     }
 });
 
-// Route handler for getting the total distribution for Matrizes
+// Rota para obter o total de distribuição para Matrizes
 app.get('/totalDistribuicao/matrizes', async (req, res) => {
     try {
         const totalDistribuicaoMatrizes = await calcularTotalDistribuicao('Matrizes');
@@ -93,7 +98,7 @@ app.get('/totalDistribuicao/matrizes', async (req, res) => {
     }
 });
 
-// Function to calculate totalEntradaRacao
+// Função para calcular o total de entrada de ração
 async function calcularTotalEntradaRacao() {
     try {
         const query = 'SELECT SUM(quantidadeRacao) AS total FROM entradaracao';
@@ -112,7 +117,7 @@ async function calcularTotalEntradaRacao() {
     }
 }
 
-// Function to calculate total distribution for a given category
+// Função para calcular o total de distribuição para uma categoria específica
 async function calcularTotalDistribuicao(categoria) {
     try {
         const query = `SELECT SUM(quantidade) AS total FROM distribuicao${categoria.toLowerCase()}`;
@@ -131,6 +136,7 @@ async function calcularTotalDistribuicao(categoria) {
     }
 }
 
+// Função para obter o estoque atual
 async function obterEstoqueAtual() {
     try {
         const query = 'SELECT quantidade FROM estoque';
@@ -139,7 +145,6 @@ async function obterEstoqueAtual() {
                 if (error) {
                     reject(error);
                 } else {
-                    // Check if there are any results
                     const estoqueAtual = results.length > 0 ? results[0].quantidade : 0;
                     resolve(estoqueAtual);
                 }
@@ -151,6 +156,7 @@ async function obterEstoqueAtual() {
     }
 }
 
+// Função para atualizar o estoque
 async function atualizarEstoque(novoEstoque) {
     try {
         const updateQuery = 'UPDATE estoque SET quantidade = ?';
@@ -168,13 +174,13 @@ async function atualizarEstoque(novoEstoque) {
     }
 }
 
-// Route handler for updating stock manually
+// Rota para atualizar o estoque manualmente
 app.post('/atualizarEstoqueManual', async (req, res) => {
     try {
-        // Your logic to update stock manually goes here
-        // For example, you might call obterEExibirEstoqueAtual() to fetch the latest stock from the database
+        // Lógica para atualizar o estoque manualmente aqui
+        // Por exemplo, você pode chamar obterEExibirEstoqueAtual() para buscar o estoque mais recente do banco de dados
 
-        // Assuming a successful update
+        // Supondo uma atualização bem-sucedida
         res.status(200).json({ success: true, message: 'Estoque atualizado manualmente.' });
     } catch (error) {
         console.error('Erro ao atualizar estoque manualmente:', error);
@@ -182,19 +188,20 @@ app.post('/atualizarEstoqueManual', async (req, res) => {
     }
 });
 
+// Função para realizar a distribuição
 async function realizarDistribuicao(categoria, quantidade) {
     try {
-        // Check if there is enough stock
+        // Verificar se há estoque suficiente
         const estoqueAtual = await obterEstoqueAtual();
         if (quantidade > estoqueAtual) {
             throw new Error(`Quantidade insuficiente em estoque para ${categoria}.`);
         }
 
-        // Update stock by subtracting the quantity
+        // Atualizar estoque subtraindo a quantidade
         const novoEstoque = estoqueAtual - quantidade;
         await atualizarEstoque(novoEstoque);
 
-        // Save distribution to the corresponding table
+        // Salvar a distribuição na tabela correspondente
         const insertQuery = `INSERT INTO distribuicao${categoria.toLowerCase()} (quantidade) VALUES (?)`;
         connection.query(insertQuery, [quantidade], (error, results) => {
             if (error) {
@@ -209,7 +216,7 @@ async function realizarDistribuicao(categoria, quantidade) {
     }
 }
 
-// Route handler for distributing to Matrizes
+// Rota para distribuir para Matrizes
 app.post('/distribuicaoMatrizes', async (req, res) => {
     try {
         const { quantidade } = req.body;
@@ -226,7 +233,7 @@ app.post('/distribuicaoMatrizes', async (req, res) => {
     }
 });
 
-// Route handler for distributing to Machos
+// Rota para distribuir para Machos
 app.post('/distribuicaoMachos', async (req, res) => {
     try {
         const { quantidade } = req.body;
@@ -243,7 +250,7 @@ app.post('/distribuicaoMachos', async (req, res) => {
     }
 });
 
-// Route handler for distributing to Berçário
+// Rota para distribuir para Berçário
 app.post('/distribuicaoBercario', async (req, res) => {
     try {
         const { quantidade } = req.body;
@@ -260,22 +267,23 @@ app.post('/distribuicaoBercario', async (req, res) => {
     }
 });
 
+// Rota para registrar entrada de ração
 app.post('/entradaracao', async (req, res) => {
     try {
-        // Extract data from the request body
+        // Extrair dados do corpo da requisição
         const { quantidadeRacao } = req.body;
 
-        // Insert data into entradaracao table
+        // Inserir dados na tabela entradaracao
         const insertQuery = 'INSERT INTO entradaracao (quantidadeRacao, data) VALUES (?, CURRENT_TIMESTAMP)';
         connection.query(insertQuery, [quantidadeRacao], (error, results) => {
             if (error) {
                 console.error('Erro ao inserir entrada de ração:', error);
                 res.status(500).json({ message: 'Erro ao processar entrada de ração.' });
             } else {
-                // Update stock in the estoque table
+                // Atualizar estoque na tabela estoque
                 atualizarEstoqueNoBanco(quantidadeRacao);
 
-                // Send a success response
+                // Enviar uma resposta de sucesso
                 res.status(201).json({ message: 'Entrada de ração registrada com sucesso!' });
             }
         });
@@ -285,32 +293,32 @@ app.post('/entradaracao', async (req, res) => {
     }
 });
 
-
+// Função para atualizar o estoque no banco de dados
 async function atualizarEstoqueNoBanco(quantidadeRacao) {
     try {
-        // Fetch the current stock from the database
+        // Obter o estoque atual do banco de dados
         const estoqueAtual = await obterEstoqueAtual();
 
-        // Parse the current stock and quantity as integers
+        // Converter o estoque atual e a quantidade para inteiros
         const estoqueAtualInt = parseInt(estoqueAtual, 10);
         const quantidadeRacaoInt = parseInt(quantidadeRacao, 10);
 
-        // Check if parsing is successful
+        // Verificar se a conversão foi bem-sucedida
         if (isNaN(estoqueAtualInt) || isNaN(quantidadeRacaoInt)) {
             throw new Error('Erro ao converter valores para números inteiros.');
         }
 
-        // Update stock by adding the quantity
+        // Atualizar estoque adicionando a quantidade
         const novoEstoque = estoqueAtualInt + quantidadeRacaoInt;
 
-        // Update the stock in the database
+        // Atualizar o estoque no banco de dados
         await atualizarEstoque(novoEstoque);
     } catch (error) {
         console.error('Erro ao atualizar estoque no banco:', error);
     }
 }
 
-// Route handler for getting current stock
+// Rota para obter o estoque atual
 app.get('/estoque', async (req, res) => {
     try {
         const estoqueAtual = await obterEstoqueAtual();
@@ -320,6 +328,7 @@ app.get('/estoque', async (req, res) => {
         res.status(500).json({ error: 'Erro ao obter estoque.' });
     }
 });
+
 // Função para calcular o total de ração fornecida
 async function calcularTotalRacaoFornecida() {
     try {
@@ -338,17 +347,18 @@ async function calcularTotalRacaoFornecida() {
         return 0;
     }
 }
+// Rota para gerar o relatório diário
 app.get('/relatorio_diario', async (req, res) => {
     try {
-        // Get the current date
+        // Obter a data atual
         const currentDate = new Date().toISOString().split('T')[0];
 
-        // Fetch entradaracao data for today
+        // Consultar dados de entradaracao para hoje
         const entradaracaoQuery = 'SELECT SUM(quantidadeRacao) AS totalEntrada FROM entradaracao WHERE DATE(data) = ?';
         const entradaracaoResults = await queryDatabase(entradaracaoQuery, [currentDate]);
         const totalEntradaRacao = entradaracaoResults[0].totalEntrada || 0;
 
-        // Fetch distribution data for today
+        // Consultar dados de distribuicao para hoje
         const distribuicaoQuery = 'SELECT categoria, SUM(quantidade) AS totalDistribuicao FROM distribuicao WHERE DATE(data) = ? GROUP BY categoria';
         const distribuicaoResults = await queryDatabase(distribuicaoQuery, [currentDate]);
         const relatorioDiario = {
@@ -356,7 +366,7 @@ app.get('/relatorio_diario', async (req, res) => {
             distribuicao: distribuicaoResults,
         };
 
-        // Send the daily report as JSON
+        // Enviar o relatório diário como JSON
         res.json(relatorioDiario);
     } catch (error) {
         console.error('Erro ao gerar relatório diário:', error);
@@ -364,7 +374,7 @@ app.get('/relatorio_diario', async (req, res) => {
     }
 });
 
-// Function to perform a database query and return a promise
+// Função para realizar uma consulta no banco de dados e retornar uma Promise
 function queryDatabase(query, values) {
     return new Promise((resolve, reject) => {
         connection.query(query, values, (error, results) => {
@@ -377,14 +387,13 @@ function queryDatabase(query, values) {
     });
 }
 
-
-
+// Tratamento de encerramento da aplicação
 process.on('SIGINT', () => {
     connection.end();
     process.exit();
 });
 
-// Start the server
+// Iniciar o servidor
 app.listen(PORT, () => {
     console.log(`Servidor está rodando na porta ${PORT}`);
 });

@@ -1,6 +1,9 @@
+// Função executada quando o documento está pronto
 $(document).ready(function () {
     obterEExibirEstoqueAtual();
 });
+
+// Verifica se a página atual é relatorio_diario.html e associa a função ao clique do botão
 $(document).ready(function () {
     if (window.location.pathname.includes('relatorio_diario.html')) {
         $(document).on('click', '#atualizarRelatorioButton', function () {
@@ -9,29 +12,27 @@ $(document).ready(function () {
     }
 });
 
+// Registra a entrada de ração no sistema
 function registrarEntradaRacao() {
     const quantidadeRacao = $('#quantidadeRacao').val();
+    const formData = { quantidadeRacao };
 
-    const formData = {
-        quantidadeRacao,
-    };
-
+    // Requisição AJAX para '/entradaracao'
     $.ajax({
         type: 'POST',
         url: '/entradaracao',
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function (data) {
-            console.log(data);
             if (data.success) {
-                // Display success message
+                // Exibe mensagem de sucesso
                 $('#mensagemEntradaRacao').html(`<p class="success">${data.message}</p>`);
             } else {
-                // Display error message
+                // Exibe mensagem de erro
                 $('#mensagemEntradaRacao').html(`<p class="error">${data.message}</p>`);
             }
 
-            // Optionally, you can clear the input field after a successful entry
+            // Opcionalmente, limpa o campo de entrada após um registro bem-sucedido
             $('#quantidadeRacao').val('');
         },
         error: function (error) {
@@ -39,14 +40,13 @@ function registrarEntradaRacao() {
         },
     });
 }
-// Função para distribuir ração para matrizes
+
+// Registra a distribuição para matrizes
 function registrarDistribuicaoMatrizes() {
     const quantidadeMatrizes = $('#quantidadeMatrizes').val();
+    const formData = { quantidade: quantidadeMatrizes };
 
-    const formData = {
-        quantidade: quantidadeMatrizes,
-    };
-
+    // Requisição AJAX para '/distribuicaoMatrizes'
     $.ajax({
         type: 'POST',
         url: '/distribuicaoMatrizes',
@@ -62,10 +62,11 @@ function registrarDistribuicaoMatrizes() {
     });
 }
 
-// Function to register distribution to Berçário
+// Registra a distribuição para o Berçário
 function registrarDistribuicaoBercario() {
     const quantidade = document.getElementById('quantidadeBercario').value;
 
+    // Requisição AJAX para '/distribuicaoBercario'
     $.ajax({
         type: 'POST',
         url: '/distribuicaoBercario',
@@ -85,13 +86,12 @@ function registrarDistribuicaoBercario() {
     });
 }
 
+// Registra a distribuição para machos
 function registrarDistribuicaoMachos() {
     const quantidade = $('#quantidadeMachos').val();
+    const formData = { quantidade };
 
-    const formData = {
-        quantidade: quantidade,
-    };
-
+    // Requisição AJAX para '/distribuicaoMachos'
     $.ajax({
         type: 'POST',
         url: '/distribuicaoMachos',
@@ -108,50 +108,22 @@ function registrarDistribuicaoMachos() {
     });
 }
 
-// Função para registrar distribuição para berçário
-function registrarDistribuicaoBercario() {
-    // Obter dados do formulário
-    const quantidade = document.getElementById('quantidadeBercario').value;
-
-    // Fazer uma requisição POST para o servidor usando AJAX
-    $.ajax({
-        type: 'POST',
-        url: '/distribuicaoBercario',
-        contentType: 'application/json',
-        data: JSON.stringify({ quantidade }),
-        success: function (data) {
-            // Lidar com a resposta do servidor
-            if (data.message) {
-                // Exibir mensagem de sucesso
-                document.getElementById('mensagemDistribuicaoBercario').innerHTML = `<p>${data.message}</p>`;
-            } else {
-                // Exibir mensagem de erro
-                document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro ao processar distribuição para berçário.</p>';
-            }
-        },
-        error: function (error) {
-            console.error('Erro:', error);
-            document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro de comunicação com o servidor.</p>';
-        },
-    });
-}
-// Check if the current page is controle_estoque.html
+// Verifica se a página atual é controle_estoque.html e associa a função ao clique do botão
 if (window.location.pathname.includes('controle_estoque.html')) {
-    // Update stock manually when the button is clicked
     $(document).on('click', '#atualizarEstoqueButton', function () {
         atualizarEstoqueManualmente();
     });
 }
 
-// Fetch and display the current stock when needed
+// Obtém e exibe o estoque atual quando necessário
 async function obterEExibirEstoqueAtual() {
     try {
-        // Check if the current page is controle_estoque.html
+        // Verifica se a página atual é controle_estoque.html
         if (window.location.pathname.includes('controle_estoque.html')) {
             const response = await fetch('/estoque');
             const data = await response.json();
-            const estoqueQuantidade = parseInt(data.quantidade, 10); // Parse as an integer
-            console.log('Estoque atual:', estoqueQuantidade);  // Add this line
+            const estoqueQuantidade = parseInt(data.quantidade, 10); // Converte para inteiro
+            console.log('Estoque atual:', estoqueQuantidade); // Adiciona esta linha
             document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${estoqueQuantidade}`;
         }
     } catch (error) {
@@ -159,6 +131,7 @@ async function obterEExibirEstoqueAtual() {
     }
 }
 
+// Atualiza manualmente o estoque
 function atualizarEstoqueManualmente() {
     $.ajax({
         type: 'POST',
@@ -166,7 +139,7 @@ function atualizarEstoqueManualmente() {
         success: function (data) {
             console.log(data);
             if (data.success) {
-                // Optionally, you can update the displayed stock value
+                // Opcionalmente, atualiza o valor do estoque exibido
                 obterEExibirEstoqueAtual();
             }
         },
@@ -176,14 +149,15 @@ function atualizarEstoqueManualmente() {
     });
 }
 
+// Obtém e exibe o relatório diário quando necessário
 async function obterEExibirRelatorioDiario() {
     try {
-        // Fetch totalEntradaRacao from entradaracao
+        // Obtém totalEntradaRacao de entradaracao
         const entradaRacaoResponse = await fetch('/totalEntradaRacao');
         const entradaRacaoData = await entradaRacaoResponse.json();
         document.getElementById('totalEntradaRacao').innerText = `Total Entrada de Ração: ${entradaRacaoData.total || 0}`;
 
-        // Fetch distribution data from each table
+        // Obtém dados de distribuição de cada tabela
         const bercarioResponse = await fetch('/totalDistribuicao/bercario');
         const machosResponse = await fetch('/totalDistribuicao/machos');
         const matrizesResponse = await fetch('/totalDistribuicao/matrizes');
@@ -200,10 +174,9 @@ async function obterEExibirRelatorioDiario() {
     }
 }
 
-// Check if the current page is controle_estoque.html
+// Verifica se a página atual é controle_estoque.html e associa a função ao clique do botão
 $(document).ready(function () {
     if (window.location.pathname.includes('controle_estoque.html')) {
-        // Update stock manually when the button is clicked
         $(document).on('click', '#atualizarEstoqueButton', function () {
             atualizarEstoqueManualmente();
         });
