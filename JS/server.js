@@ -209,8 +209,17 @@ async function atualizarEstoqueNoBanco(quantidadeRacao) {
         // Fetch the current stock from the database
         const estoqueAtual = await obterEstoqueAtual();
 
+        // Parse the current stock and quantity as integers
+        const estoqueAtualInt = parseInt(estoqueAtual, 10);
+        const quantidadeRacaoInt = parseInt(quantidadeRacao, 10);
+
+        // Check if parsing is successful
+        if (isNaN(estoqueAtualInt) || isNaN(quantidadeRacaoInt)) {
+            throw new Error('Erro ao converter valores para números inteiros.');
+        }
+
         // Update stock by adding the quantity
-        const novoEstoque = estoqueAtual + quantidadeRacao;
+        const novoEstoque = estoqueAtualInt + quantidadeRacaoInt;
 
         // Update the stock in the database
         await atualizarEstoque(novoEstoque);
@@ -218,6 +227,7 @@ async function atualizarEstoqueNoBanco(quantidadeRacao) {
         console.error('Erro ao atualizar estoque no banco:', error);
     }
 }
+
 // Route handler for getting current stock
 app.get('/estoque', async (req, res) => {
     try {
