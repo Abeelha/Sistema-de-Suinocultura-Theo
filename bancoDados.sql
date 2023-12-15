@@ -1,4 +1,80 @@
-Script para criar o banco no MySQL
+SELECTS UPDATEs INSERTs IMPORTANTES{
+    select * from entradaracao;
+    select * from distribuicaobercario;
+    select * from distribuicaomachos;
+    select * from distribuicaomatrizes;
+    select * from estoque
+
+    ------------------------------------------------------------------------------------------------
+    UPDATE
+    estoque
+    SET
+    quantidade = 0
+    WHERE
+    id = 1;
+
+    INSERT INTO
+    estoque (id, quantidade)
+    VALUES
+    (1, 0);
+
+
+    ------------------------------------------------------------------------------------------------
+    UPDATE
+  estoque
+SET
+  quantidade = quantidade + (
+    SELECT
+      SUM(quantidadeRacao)
+    FROM
+      entradaracao
+  )
+WHERE
+  id = 1;
+UPDATE
+  estoque
+SET
+  quantidade = quantidade - (
+    SELECT
+      SUM(quantidade)
+    FROM
+      distribuicaobercario
+  )
+WHERE
+  id = 1;
+UPDATE
+  estoque
+SET
+  quantidade = quantidade - (
+    SELECT
+      SUM(quantidade)
+    FROM
+      distribuicaomatrizes
+  )
+WHERE
+  id = 1;
+UPDATE
+  estoque
+SET
+  quantidade = quantidade - (
+    SELECT
+      SUM(quantidade)
+    FROM
+      distribuicaomachos
+  )
+WHERE
+  id = 1;
+SELECT
+  *
+FROM
+  estoque
+WHERE
+  quantidade IS NOT NULL;
+
+}
+
+!IMPORTANTE PARA CRIAÇÃO DO BANCO DE DADOS MYSQL
+
 CREATE DATABASE IF NOT EXISTS SuinoCulturaTheo;
 
 USE SuinoCulturaTheo;

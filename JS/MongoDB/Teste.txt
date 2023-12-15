@@ -1,0 +1,4 @@
+Se quiser implementar em MongoDB, esta pasta contem um exemplo de como fazer
+
+server-Mongo.js
+script_Mongo.js
