@@ -49,6 +49,87 @@ htmlFiles.forEach((file) => {
     });
 });
 
+app.get('/totalEntradaRacao', async (req, res) => {
+    try {
+        const totalEntradaRacao = await calcularTotalEntradaRacao();
+        res.status(200).json({ total: totalEntradaRacao });
+    } catch (error) {
+        console.error('Erro ao obter total de entrada de ração:', error);
+        res.status(500).json({ error: 'Erro ao obter total de entrada de ração.' });
+    }
+});
+
+// Route handler for getting the total distribution for Berçário
+app.get('/totalDistribuicao/bercario', async (req, res) => {
+    try {
+        const totalDistribuicaoBercario = await calcularTotalDistribuicao('Bercario');
+        res.status(200).json({ total: totalDistribuicaoBercario });
+    } catch (error) {
+        console.error('Erro ao obter total de distribuição para Berçário:', error);
+        res.status(500).json({ error: 'Erro ao obter total de distribuição para Berçário.' });
+    }
+});
+
+// Route handler for getting the total distribution for Machos
+app.get('/totalDistribuicao/machos', async (req, res) => {
+    try {
+        const totalDistribuicaoMachos = await calcularTotalDistribuicao('Machos');
+        res.status(200).json({ total: totalDistribuicaoMachos });
+    } catch (error) {
+        console.error('Erro ao obter total de distribuição para Machos:', error);
+        res.status(500).json({ error: 'Erro ao obter total de distribuição para Machos.' });
+    }
+});
+
+// Route handler for getting the total distribution for Matrizes
+app.get('/totalDistribuicao/matrizes', async (req, res) => {
+    try {
+        const totalDistribuicaoMatrizes = await calcularTotalDistribuicao('Matrizes');
+        res.status(200).json({ total: totalDistribuicaoMatrizes });
+    } catch (error) {
+        console.error('Erro ao obter total de distribuição para Matrizes:', error);
+        res.status(500).json({ error: 'Erro ao obter total de distribuição para Matrizes.' });
+    }
+});
+
+// Function to calculate totalEntradaRacao
+async function calcularTotalEntradaRacao() {
+    try {
+        const query = 'SELECT SUM(quantidadeRacao) AS total FROM entradaracao';
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results[0].total || 0);
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Erro ao calcular total de entrada de ração:', error);
+        return 0;
+    }
+}
+
+// Function to calculate total distribution for a given category
+async function calcularTotalDistribuicao(categoria) {
+    try {
+        const query = `SELECT SUM(quantidade) AS total FROM distribuicao${categoria.toLowerCase()}`;
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results[0].total || 0);
+                }
+            });
+        });
+    } catch (error) {
+        console.error(`Erro ao calcular total de distribuição para ${categoria}:`, error);
+        return 0;
+    }
+}
+
 async function obterEstoqueAtual() {
     try {
         const query = 'SELECT quantidade FROM estoque';
