@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 const PORT = 3002;
 
+app.use(express.static(path.join(__dirname, '../')));
 app.use('/CSS', express.static(path.join(__dirname, '../CSS')));
 app.use('/IMGs', express.static(path.join(__dirname, '../IMGs')));
 app.use('/JS', express.static(path.join(__dirname, '../JS')));
