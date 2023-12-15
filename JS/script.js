@@ -77,62 +77,68 @@ function registrarDistribuicaoMachos() {
 
 // Função para registrar distribuição para berçário
 function registrarDistribuicaoBercario() {
-    const quantidade = $('#quantidadeBercario').val();
+    // Obter dados do formulário
+    const quantidade = document.getElementById('quantidadeBercario').value;
 
-    const formData = {
-        quantidade: quantidade,
-    };
-
-    $.ajax({
-        type: 'POST',
-        url: '/distribuicaoBercario',
-        contentType: 'application/json',
-        data: JSON.stringify(formData),
-        success: function (data) {
-            console.log(data);
-            $('#mensagemDistribuicaoBercario').html(`<p>${data.message}</p>`);
+    // Fazer uma requisição POST para o servidor usando AJAX
+    fetch('/distribuicaoBercario', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
         },
-        error: function (error) {
+        body: JSON.stringify({ quantidade }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Lidar com a resposta do servidor
+            if (data.message) {
+                // Exibir mensagem de sucesso
+                document.getElementById('mensagemDistribuicaoBercario').innerHTML = `<p>${data.message}</p>`;
+            } else {
+                // Exibir mensagem de erro
+                document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro ao processar distribuição para berçário.</p>';
+            }
+        })
+        .catch(error => {
             console.error('Erro:', error);
-            $('#mensagemDistribuicaoBercario').html('<p>Erro ao processar distribuição para berçário.</p>');
-        },
-    });
+            document.getElementById('mensagemDistribuicaoBercario').innerHTML = '<p>Erro de comunicação com o servidor.</p>';
+        });
 }
 
+// Função para registrar entrada de ração
+// ... (other script.js code) ...
 
-// Função para realizar distribuição para Berçário
-// Função para realizar distribuição para Berçário
-function realizarDistribuicaoBercario() {
-    const quantidadeBercario = $('#quantidadeBercario').val();
+// Função para registrar entrada de ração
+function registrarEntradaRacao() {
+    const quantidadeRacao = $('#quantidadeRacao').val();
 
     const formData = {
-        quantidade: quantidadeBercario,
+        quantidadeRacao,
     };
 
     $.ajax({
         type: 'POST',
-        url: '/distribuicaoBercario',
+        url: '/entradaracao',
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function (data) {
             console.log(data);
             if (data.success) {
                 // Display success message
-                $('#mensagemDistribuicaoBercario').html(`<p class="success">${data.message}</p>`);
+                $('#mensagemEntradaRacao').html(`<p class="success">${data.message}</p>`);
             } else {
                 // Display error message
-                $('#mensagemDistribuicaoBercario').html(`<p class="error">${data.message}</p>`);
+                $('#mensagemEntradaRacao').html(`<p class="error">${data.message}</p>`);
             }
 
-            // Optionally, you can clear the input field after a successful distribution
-            $('#quantidadeBercario').val('');
+            // Optionally, you can clear the input field after a successful entry
+            $('#quantidadeRacao').val('');
         },
         error: function (error) {
-            console.error('Erro ao processar distribuição para Berçário:', error);
+            console.error('Erro:', error);
         },
     });
 }
-
 // Função para atualizar o estoque no banco de dados
 async function atualizarEstoqueNoBanco(quantidade) {
     try {
