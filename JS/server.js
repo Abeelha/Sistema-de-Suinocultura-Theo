@@ -17,7 +17,7 @@ const connection = mysql.createConnection({
     port: 3306,
     user: 'root',
     password: 'admin',
-    database: 'SuinoCulturaTheo',
+    database: 'suinoculturaTheo',
 });
 
 connection.connect(err => {
@@ -27,6 +27,7 @@ connection.connect(err => {
     }
     console.log('Conectado ao MySQL');
 });
+
 // Rota principal
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
@@ -48,17 +49,57 @@ htmlFiles.forEach((file) => {
     });
 });
 
-// Redirecionar /controle_estoque para /controle_estoque.html
-// Rota para obter o estoque atual
-app.get('/estoque', async (req, res) => {
+async function obterEstoqueAtual() {
     try {
-        const estoqueAtual = await obterEstoqueAtual();
-        res.json({ quantidade: estoqueAtual });
+        const query = 'SELECT quantidade FROM estoque';
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    // Check if there are any results
+                    const estoqueAtual = results.length > 0 ? results[0].quantidade : 0;
+                    resolve(estoqueAtual);
+                }
+            });
+        });
     } catch (error) {
-        console.error('Erro ao obter estoque:', error);
-        res.status(500).json({ message: 'Erro ao obter estoque.' });
+        console.error('Erro ao obter estoque atual:', error);
+        return 0;
+    }
+}
+
+async function atualizarEstoque(novoEstoque) {
+    try {
+        const updateQuery = 'UPDATE estoque SET quantidade = ?';
+        return new Promise((resolve, reject) => {
+            connection.query(updateQuery, [novoEstoque], (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Erro ao atualizar estoque:', error);
+    }
+}
+
+// Route handler for updating stock manually
+app.post('/atualizarEstoqueManual', async (req, res) => {
+    try {
+        // Your logic to update stock manually goes here
+        // For example, you might call obterEExibirEstoqueAtual() to fetch the latest stock from the database
+
+        // Assuming a successful update
+        res.status(200).json({ success: true, message: 'Estoque atualizado manualmente.' });
+    } catch (error) {
+        console.error('Erro ao atualizar estoque manualmente:', error);
+        res.status(500).json({ success: false, message: 'Erro ao atualizar estoque manualmente.' });
     }
 });
+
 async function realizarDistribuicao(categoria, quantidade) {
     try {
         // Check if there is enough stock
@@ -85,6 +126,7 @@ async function realizarDistribuicao(categoria, quantidade) {
         return false;
     }
 }
+
 // Route handler for distributing to Matrizes
 app.post('/distribuicaoMatrizes', async (req, res) => {
     try {
@@ -123,7 +165,7 @@ app.post('/distribuicaoMachos', async (req, res) => {
 app.post('/distribuicaoBercario', async (req, res) => {
     try {
         const { quantidade } = req.body;
-        const sucesso = await realizarDistribuicao('Berçário', quantidade);
+        const sucesso = await realizarDistribuicao('Bercario', quantidade);
 
         if (sucesso) {
             res.status(201).json({ message: 'Distribuição para Berçário registrada com sucesso!' });
@@ -162,6 +204,20 @@ app.post('/entradaracao', async (req, res) => {
 });
 
 
+async function atualizarEstoqueNoBanco(quantidadeRacao) {
+    try {
+        // Fetch the current stock from the database
+        const estoqueAtual = await obterEstoqueAtual();
+
+        // Update stock by adding the quantity
+        const novoEstoque = estoqueAtual + quantidadeRacao;
+
+        // Update the stock in the database
+        await atualizarEstoque(novoEstoque);
+    } catch (error) {
+        console.error('Erro ao atualizar estoque no banco:', error);
+    }
+}
 
 // Função para calcular o total de ração fornecida
 async function calcularTotalRacaoFornecida() {
@@ -182,51 +238,12 @@ async function calcularTotalRacaoFornecida() {
     }
 }
 
-// Função para obter o estoque atual
-async function obterEstoqueAtual() {
-    try {
-        const query = 'SELECT quantidade FROM estoque';
-        return new Promise((resolve, reject) => {
-            connection.query(query, (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results[0] ? results[0].quantidade : 0);
-                }
-            });
-        });
-    } catch (error) {
-        console.error('Erro ao obter estoque atual:', error);
-        return 0;
-    }
-}
-
-// Função para atualizar o estoque
-async function atualizarEstoque(quantidade) {
-    try {
-        const estoqueAtual = await obterEstoqueAtual();
-        const novoEstoque = estoqueAtual + quantidade;
-
-        const query = 'UPDATE estoque SET quantidade = ?';
-        connection.query(query, [novoEstoque], (error) => {
-            if (error) {
-                console.error('Erro ao atualizar estoque:', error);
-            }
-        });
-    } catch (error) {
-        console.error('Erro ao atualizar estoque:', error);
-    }
-}
-
-// Rota para obter o relatório diário com base na data
-
-
-
 process.on('SIGINT', () => {
     connection.end();
     process.exit();
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Servidor está rodando na porta ${PORT}`);
 });

@@ -1,4 +1,4 @@
-Script para criar o banco no MySQL para c
+Script para criar o banco no MySQL
 CREATE DATABASE IF NOT EXISTS SuinoCulturaTheo;
 
 USE SuinoCulturaTheo;
