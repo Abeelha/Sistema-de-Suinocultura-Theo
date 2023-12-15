@@ -118,12 +118,11 @@ app.post('/distribuicaoMachos', async (req, res) => {
         res.status(500).json({ message: 'Erro ao processar distribuição para Machos.' });
     }
 });
-
 // Route handler for distributing to Berçário
 app.post('/distribuicaoBercario', async (req, res) => {
     try {
         const { quantidade } = req.body;
-        const sucesso = await realizarDistribuicao('Berçário', quantidade);
+        const sucesso = await realizarDistribuicao('Bercario', quantidade);
 
         if (sucesso) {
             res.status(201).json({ message: 'Distribuição para Berçário registrada com sucesso!' });
@@ -136,6 +135,7 @@ app.post('/distribuicaoBercario', async (req, res) => {
     }
 });
 
+
 app.post('/entradaracao', async (req, res) => {
     try {
         // Extract data from the request body
@@ -146,22 +146,17 @@ app.post('/entradaracao', async (req, res) => {
         connection.query(insertQuery, [quantidadeRacao], (error, results) => {
             if (error) {
                 console.error('Erro ao inserir entrada de ração:', error);
-                res.status(500).json({ message: 'Erro ao processar entrada de ração.' });
+                res.status(500).json({ success: false, message: 'Erro ao processar entrada de ração.' });
             } else {
-                // Update stock in the estoque table
-                atualizarEstoqueNoBanco(quantidadeRacao);
-
                 // Send a success response
-                res.status(201).json({ message: 'Entrada de ração registrada com sucesso!' });
+                res.status(201).json({ success: true, message: 'Entrada de ração registrada com sucesso!' });
             }
         });
     } catch (error) {
         console.error('Erro ao processar entrada de ração:', error);
-        res.status(500).json({ message: 'Erro ao processar entrada de ração.' });
+        res.status(500).json({ success: false, message: 'Erro ao processar entrada de ração.' });
     }
 });
-
-
 
 // Função para calcular o total de ração fornecida
 async function calcularTotalRacaoFornecida() {
