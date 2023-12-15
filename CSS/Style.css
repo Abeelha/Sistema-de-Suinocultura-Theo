@@ -210,22 +210,40 @@ body {
 }
 
 .principal-index {
-    text-align: center;
-    margin-top: 50px;
-    width: 50%;
+    display: flex;
+    align-items: center;
+    width: 70%;
+    margin: auto;
+}
+
+.imagem_porco {
+    flex: 0 0 auto;
+    /* Allow the image to shrink or grow as needed */
+    margin-right: 20px;
+    /* Adjust margin as needed */
+}
+
+.porco-feliz-index {
+    width: 200px;
+    box-shadow: 10px 10px 10px #000000;
+}
+
+.texto_porco {
+    flex: 1;
+    /* Allow the text to take up remaining space */
 }
 
 .titulo-principal-index {
     font-size: 2em;
     color: var(--texto);
+    text-align: center;
+    margin-top: 50px;
 }
 
-.porco-feliz-index {
-    width: 120px;
-    float: left;
-    margin: 0 20px 20px 0;
-    box-shadow: 10px 10px 10px #000000;
+.principal-index p {
+    text-align: left;
 }
+
 
 /* FIM index */
 .mapa {
