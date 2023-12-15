@@ -218,7 +218,16 @@ async function atualizarEstoqueNoBanco(quantidadeRacao) {
         console.error('Erro ao atualizar estoque no banco:', error);
     }
 }
-
+// Route handler for getting current stock
+app.get('/estoque', async (req, res) => {
+    try {
+        const estoqueAtual = await obterEstoqueAtual();
+        res.status(200).json({ quantidade: estoqueAtual });
+    } catch (error) {
+        console.error('Erro ao obter estoque:', error);
+        res.status(500).json({ error: 'Erro ao obter estoque.' });
+    }
+});
 // Função para calcular o total de ração fornecida
 async function calcularTotalRacaoFornecida() {
     try {
@@ -237,6 +246,46 @@ async function calcularTotalRacaoFornecida() {
         return 0;
     }
 }
+app.get('/relatorio_diario', async (req, res) => {
+    try {
+        // Get the current date
+        const currentDate = new Date().toISOString().split('T')[0];
+
+        // Fetch entradaracao data for today
+        const entradaracaoQuery = 'SELECT SUM(quantidadeRacao) AS totalEntrada FROM entradaracao WHERE DATE(data) = ?';
+        const entradaracaoResults = await queryDatabase(entradaracaoQuery, [currentDate]);
+        const totalEntradaRacao = entradaracaoResults[0].totalEntrada || 0;
+
+        // Fetch distribution data for today
+        const distribuicaoQuery = 'SELECT categoria, SUM(quantidade) AS totalDistribuicao FROM distribuicao WHERE DATE(data) = ? GROUP BY categoria';
+        const distribuicaoResults = await queryDatabase(distribuicaoQuery, [currentDate]);
+        const relatorioDiario = {
+            totalEntradaRacao,
+            distribuicao: distribuicaoResults,
+        };
+
+        // Send the daily report as JSON
+        res.json(relatorioDiario);
+    } catch (error) {
+        console.error('Erro ao gerar relatório diário:', error);
+        res.status(500).json({ message: 'Erro ao gerar relatório diário.' });
+    }
+});
+
+// Function to perform a database query and return a promise
+function queryDatabase(query, values) {
+    return new Promise((resolve, reject) => {
+        connection.query(query, values, (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+
 
 process.on('SIGINT', () => {
     connection.end();

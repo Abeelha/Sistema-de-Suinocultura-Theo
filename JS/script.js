@@ -1,4 +1,14 @@
-// Função para registrar entrada de ração
+$(document).ready(function () {
+    obterEExibirEstoqueAtual();
+});
+$(document).ready(function () {
+    if (window.location.pathname.includes('relatorio_diario.html')) {
+        $(document).on('click', '#atualizarRelatorioButton', function () {
+            obterEExibirRelatorioDiario();
+        });
+    }
+});
+
 function registrarEntradaRacao() {
     const quantidadeRacao = $('#quantidadeRacao').val();
 
@@ -125,32 +135,6 @@ function registrarDistribuicaoBercario() {
         },
     });
 }
-
-// Function to manually update stock
-function atualizarEstoqueManualmente() {
-    $.ajax({
-        type: 'POST',
-        url: '/atualizarEstoqueManual',
-        success: function (data) {
-            console.log(data);
-            if (data.success) {
-                // Display success message
-                alert('Estoque atualizado com sucesso!');
-
-                // Optionally, you can update the displayed stock value
-                obterEExibirEstoqueAtual();
-            } else {
-                // Display error message
-                alert('Erro ao atualizar estoque.');
-            }
-        },
-        error: function (error) {
-            console.error('Erro ao atualizar estoque:', error);
-            alert('Erro ao atualizar estoque.');
-        },
-    });
-}
-
 // Check if the current page is controle_estoque.html
 if (window.location.pathname.includes('controle_estoque.html')) {
     // Update stock manually when the button is clicked
@@ -166,9 +150,62 @@ async function obterEExibirEstoqueAtual() {
         if (window.location.pathname.includes('controle_estoque.html')) {
             const response = await fetch('/estoque');
             const data = await response.json();
-            document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${data.quantidade}`;
+            const estoqueQuantidade = parseInt(data.quantidade, 10); // Parse as an integer
+            console.log('Estoque atual:', estoqueQuantidade);  // Add this line
+            document.getElementById('estoqueAtual').innerText = `Estoque Atual: ${estoqueQuantidade}`;
         }
     } catch (error) {
         console.error('Erro ao obter estoque:', error);
     }
 }
+
+function atualizarEstoqueManualmente() {
+    $.ajax({
+        type: 'POST',
+        url: '/atualizarEstoqueManual',
+        success: function (data) {
+            console.log(data);
+            if (data.success) {
+                // Optionally, you can update the displayed stock value
+                obterEExibirEstoqueAtual();
+            }
+        },
+        error: function (error) {
+            console.error('Erro ao atualizar estoque:', error);
+        },
+    });
+}
+
+async function obterEExibirRelatorioDiario() {
+    try {
+        // Fetch totalEntradaRacao from entradaracao
+        const entradaRacaoResponse = await fetch('/totalEntradaRacao');
+        const entradaRacaoData = await entradaRacaoResponse.json();
+        document.getElementById('totalEntradaRacao').innerText = `Total Entrada de Ração: ${entradaRacaoData.total || 0}`;
+
+        // Fetch distribution data from each table
+        const bercarioResponse = await fetch('/totalDistribuicao/bercario');
+        const machosResponse = await fetch('/totalDistribuicao/machos');
+        const matrizesResponse = await fetch('/totalDistribuicao/matrizes');
+
+        const bercarioData = await bercarioResponse.json();
+        const machosData = await machosResponse.json();
+        const matrizesData = await matrizesResponse.json();
+
+        document.getElementById('bercario').innerText = `Berçário: ${bercarioData.total || 0}`;
+        document.getElementById('machos').innerText = `Machos: ${machosData.total || 0}`;
+        document.getElementById('matrizes').innerText = `Matrizes: ${matrizesData.total || 0}`;
+    } catch (error) {
+        console.error('Erro ao gerar relatório diário:', error);
+    }
+}
+
+// Check if the current page is controle_estoque.html
+$(document).ready(function () {
+    if (window.location.pathname.includes('controle_estoque.html')) {
+        // Update stock manually when the button is clicked
+        $(document).on('click', '#atualizarEstoqueButton', function () {
+            atualizarEstoqueManualmente();
+        });
+    }
+});

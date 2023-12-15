@@ -31,15 +31,25 @@
     </header>
     <main>
         <section class="principal">
-            <!-- Exibição do Relatório Diário -->
             <div class="relatorio-diario">
                 <h3 class="titulo-principal">Relatório Diário</h3>
-                <p id="totalRacaoFornecida"></p>
-                <p id="estoqueAtualRelatorio"></p>
+
+                <div id="totalEntradaRacao">Total Entrada de Ração: Carregando...</div>
+
+                <div id="distribuicao">
+                    <h4>Distribuição</h4>
+                    <ul>
+                        <li id="bercario">Berçário: Carregando...</li>
+                        <li id="machos">Machos: Carregando...</li>
+                        <li id="matrizes">Matrizes: Carregando...</li>
+                    </ul>
+                </div>
+                <button id="atualizarRelatorioButton">Atualizar Relatório</button>
             </div>
             <img src="./IMGs/relatorio.png" alt="Relatorio">
         </section>
     </main>
+
     <footer>
         <img src="./IMGs/icone.png">
         <p class="copyright">&copy; Copyright 1000Medic - 2024</p>
