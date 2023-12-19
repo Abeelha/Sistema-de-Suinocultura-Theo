@@ -152,25 +152,53 @@ function atualizarEstoqueManualmente() {
 // Obtém e exibe o relatório diário quando necessário
 async function obterEExibirRelatorioDiario() {
     try {
-        // Obtém totalEntradaRacao de entradaracao
-        const entradaRacaoResponse = await fetch('/totalEntradaRacao');
-        const entradaRacaoData = await entradaRacaoResponse.json();
-        document.getElementById('totalEntradaRacao').innerText = `Total Entrada de Ração: ${entradaRacaoData.total || 0}`;
+        // Obter a data fornecida pelo usuário
+        const dataInput = $('#dataRelatorio').val();
 
-        // Obtém dados de distribuição de cada tabela
-        const bercarioResponse = await fetch('/totalDistribuicao/bercario');
-        const machosResponse = await fetch('/totalDistribuicao/machos');
-        const matrizesResponse = await fetch('/totalDistribuicao/matrizes');
+        // Requisição AJAX para '/relatorio_diario'
+        const response = await fetch(`/relatorio_diario?data=${dataInput}`);
+        const data = await response.json();
 
-        const bercarioData = await bercarioResponse.json();
-        const machosData = await machosResponse.json();
-        const matrizesData = await matrizesResponse.json();
+        // Atualizar os elementos HTML com os valores obtidos
+        document.getElementById('totalEntradaRacao').innerText = `Total Entrada de Ração: ${data.entradaracao.reduce((total, item) => total + item.quantidadeRacao, 0)}`;
+        // ...
 
-        document.getElementById('bercario').innerText = `Berçário: ${bercarioData.total || 0}`;
-        document.getElementById('machos').innerText = `Machos: ${machosData.total || 0}`;
-        document.getElementById('matrizes').innerText = `Matrizes: ${matrizesData.total || 0}`;
+        // Atualizar dados de distribuição para Matrizes
+        const distribuicaoMatrizesElement = document.getElementById('matrizes');
+        const totalMatrizes = data.distribuicaoMatrizes.reduce((total, item) => total + item.quantidade, 0);
+        distribuicaoMatrizesElement.innerText = `Matrizes: ${totalMatrizes}`;
+
+        // Atualizar dados de distribuição para Machos
+        const distribuicaoMachosElement = document.getElementById('machos');
+        const totalMachos = data.distribuicaoMachos.reduce((total, item) => total + item.quantidade, 0);
+        distribuicaoMachosElement.innerText = `Machos: ${totalMachos}`;
+
+        // Atualizar dados de distribuição para Berçário
+        const distribuicaoBercarioElement = document.getElementById('bercario');
+        const totalBercario = data.distribuicaoBercario.reduce((total, item) => total + item.quantidade, 0);
+        distribuicaoBercarioElement.innerText = `Berçário: ${totalBercario}`;
+
+        // Exibir mensagem de sucesso
+        alert('Relatório atualizado com sucesso!');
     } catch (error) {
         console.error('Erro ao gerar relatório diário:', error);
+        alert('Erro ao gerar relatório diário. Verifique o console para mais detalhes.');
+    }
+}
+
+
+// Função para atualizar elementos HTML com base em uma lista de dados
+function atualizarElementoHTML(elementId, dataList) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        // Calcular a quantidade total a partir dos dados
+        const quantidadeTotal = dataList.reduce((total, item) => total + item.quantidade, 0);
+
+        // Criar uma lista de strings para cada item na dataList
+        const listaItens = dataList.map(item => `${item.quantidade} (${item.data})`);
+
+        // Atualizar o elemento HTML com a lista de itens
+        element.innerText = `${elementId.charAt(0).toUpperCase() + elementId.slice(1)}: ${quantidadeTotal} - ${listaItens.join(', ')}`;
     }
 }
 
@@ -182,3 +210,12 @@ $(document).ready(function () {
         });
     }
 });
+
+// Aguarde até que o documento esteja pronto
+$(document).ready(function () {
+    // Adicione um ouvinte de evento de clique ao botão
+    $('#atualizarRelatorioButton').on('click', function () {
+        obterEExibirRelatorioDiario();
+    });
+});
+

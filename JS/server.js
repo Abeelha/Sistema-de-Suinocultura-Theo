@@ -345,31 +345,52 @@ async function calcularTotalRacaoFornecida() {
     }
 }
 // Rota para gerar o relatório diário
+// Rota para gerar o relatório diário com base na data
 app.get('/relatorio_diario', async (req, res) => {
     try {
-        // Obter a data atual
-        const currentDate = new Date().toISOString().split('T')[0];
+        // Obter a data fornecida pelo cliente (parâmetro de consulta)
+        const dataInput = req.query.data;
 
-        // Consultar dados de entradaracao para hoje
-        const entradaracaoQuery = 'SELECT SUM(quantidadeRacao) AS totalEntrada FROM entradaracao WHERE DATE(data) = ?';
-        const entradaracaoResults = await queryDatabase(entradaracaoQuery, [currentDate]);
-        const totalEntradaRacao = entradaracaoResults[0].totalEntrada || 0;
+        // Validar se a data foi fornecida
+        if (!dataInput) {
+            res.status(400).json({ error: 'Por favor, informe a data.' });
+            return;
+        }
 
-        // Consultar dados de distribuicao para hoje
-        const distribuicaoQuery = 'SELECT categoria, SUM(quantidade) AS totalDistribuicao FROM distribuicao WHERE DATE(data) = ? GROUP BY categoria';
-        const distribuicaoResults = await queryDatabase(distribuicaoQuery, [currentDate]);
+        // Consultar dados específicos de distribuicao para Matrizes
+        const distribuicaoMatrizesQuery = 'SELECT * FROM distribuicaomatrizes WHERE DATE(data) = ?';
+        const distribuicaoMatrizesResults = await queryDatabase(distribuicaoMatrizesQuery, [dataInput]);
+
+        // Consultar dados específicos de distribuicao para Machos
+        const distribuicaoMachosQuery = 'SELECT * FROM distribuicaomachos WHERE DATE(data) = ?';
+        const distribuicaoMachosResults = await queryDatabase(distribuicaoMachosQuery, [dataInput]);
+
+        // Consultar dados específicos de distribuicao para Berçário
+        const distribuicaoBercarioQuery = 'SELECT * FROM distribuicaobercario WHERE DATE(data) = ?';
+        const distribuicaoBercarioResults = await queryDatabase(distribuicaoBercarioQuery, [dataInput]);
+
+        // Consultar dados de entradaracao para a data fornecida
+        const entradaracaoQuery = 'SELECT * FROM entradaracao WHERE DATE(data) = ?';
+        const entradaracaoResults = await queryDatabase(entradaracaoQuery, [dataInput]);
+
+        // Montar o relatório diário
         const relatorioDiario = {
-            totalEntradaRacao,
-            distribuicao: distribuicaoResults,
+            distribuicaoMatrizes: distribuicaoMatrizesResults,
+            distribuicaoMachos: distribuicaoMachosResults,
+            distribuicaoBercario: distribuicaoBercarioResults,
+            entradaracao: entradaracaoResults,
         };
+        console.log('Relatório Diário Enviado:', relatorioDiario);
 
         // Enviar o relatório diário como JSON
         res.json(relatorioDiario);
     } catch (error) {
         console.error('Erro ao gerar relatório diário:', error);
-        res.status(500).json({ message: 'Erro ao gerar relatório diário.' });
+        res.status(500).json({ error: 'Erro ao gerar relatório diário. Verifique o console para mais detalhes.' });
     }
 });
+
+
 
 // Função para realizar uma consulta no banco de dados e retornar uma Promise
 function queryDatabase(query, values) {
