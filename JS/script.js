@@ -21,6 +21,8 @@ function registrarEntradaRacao() {
     $.ajax({
         type: 'POST',
         url: '/entradaracao',
+
+
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function (data) {
